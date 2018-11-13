@@ -1,5 +1,5 @@
 <template>
 	<h1>
-		hello world!
+		Hello World!
 	</h1>
 </template>

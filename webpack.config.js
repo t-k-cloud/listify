@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
+	/* default is development mode, run 'yarn run build for production.' */
 	mode: 'development',
 	entry: { /* required field */
 		app: __dirname + '/src/main.js'

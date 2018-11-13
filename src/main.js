@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueRouter from 'vue-router'
 import Component_sayhello from './sayhello.vue'
 
 Vue.config.productionTip = false
