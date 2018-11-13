@@ -1,8 +1,14 @@
 <template>
 <div>
-  <h3>
-  {{ '/' + path_arr().join('/') }}
-  </h3>
+  <div style="position: relative;">
+    <h3> {{ '/' + path_arr().join('/') }} </h3>
+    <div style="position: absolute; right: 0; top: 0">
+    <button>Open dir</button>
+    <button>Sort by</button>
+    <button>Delete all</button>
+    </div>
+  </div>
+  <hr/>
   <div v-for="i in items" style="position: relative;">
     <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     <div style="position: absolute; right: 0; top: 0">
