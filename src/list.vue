@@ -4,14 +4,16 @@
     list view: {{ path_arr().join('/') }}
   </h1>
   <div v-for="i in items">
-    {{i}}, {{brief_view}}
+    <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
   </div>
 </div>
 </template>
 
 <script>
 // <item-view v-bind:json="i" v-bind:engine="brief_view"/>
+
 export default {
+  props: ['detailed'],
   data: function () {
     return {
       'items': [
@@ -31,7 +33,7 @@ export default {
           'time': '89-12-12',
         },
       ],
-      'brief_view': 'item-test'
+      'view-engine': 'plain-view'
     }
   },
   methods: {
@@ -40,6 +42,14 @@ export default {
       const arr = path.split('/')
       arr.splice(0, 2)
       return arr
+    }
+  },
+  computed: {
+    bindViewComponent: function () {
+      if (this.detailed)
+        return 'detail-' + this['view-engine']
+      else
+        return 'brief-' + this['view-engine']
     }
   }
 }

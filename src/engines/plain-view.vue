@@ -1,14 +1,12 @@
 <template>
 <div>
-  <h1>
-    {{json.title}}
-  </h1>
+[ {{json.title}}, {{json.description}} {{json.time}} ]
 </div>
 </template>
 
 <script>
 export default {
-  props: ['json', 'engine'],
+  props: ['json'],
   data: function () {
     return {}
   }
