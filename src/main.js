@@ -7,6 +7,7 @@
 import Vue from 'vue/dist/vue.esm.js'
 import Router from 'vue-router'
 import Sorry from './sorry.vue'
+import ListView from './list.vue'
 
 /* close console.log on production tips */
 Vue.config.productionTip = false
@@ -14,8 +15,11 @@ Vue.config.productionTip = false
 Vue.use(Router)
 
 var routes = new Router({
-  mode: 'history', // or 'hash'
+  mode: 'hash',
   routes: [
+    { path: '/list/*', component: ListView },
+    { path: '/edit/*', component: ListView },
+    { path: '/detail/*', component: ListView },
     { path: '/private', component: Sorry, props: {why: "this is private place!", joke: false}  },
     { path: '*',        component: Sorry, props: {why: "404 not found!", joke: true}  }
   ]
@@ -30,4 +34,3 @@ new Vue({
   template: '<router-view></router-view>',
   components: { Joke }
 }).$mount('#app')
-
