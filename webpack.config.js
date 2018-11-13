@@ -7,6 +7,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
+	mode: 'development',
 	entry: { /* required field */
 		app: __dirname + '/src/main.js'
 	},
@@ -25,5 +26,9 @@ module.exports = {
 			filename: 'index.html' /* default goes to ./dist */
 		}),
 		new VueLoaderPlugin()
-	]
+	],
+	devServer: {
+		contentBase: __dirname + '/dist/index.html',
+		port: 8080
+	}
 }
