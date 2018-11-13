@@ -1,17 +1,25 @@
 <template>
 <div>
-  <h1>
-    list view: {{ path_arr().join('/') }}
-  </h1>
-  <div v-for="i in items">
+  <h3>
+  {{ '/' + path_arr().join('/') }}
+  </h3>
+  <div v-for="i in items" style="position: relative;">
     <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
+    <div style="position: absolute; right: 0; top: 0">
+        <input v-if="!i.is_dir" type="button" value="C"/>
+        <input v-if="!i.is_dir" type="button" value="X"/>
+    </div>
+    <hr/>
   </div>
+
+<pre v-show="env.debug">
+{{items}}
+</pre>
+
 </div>
 </template>
 
 <script>
-// <item-view v-bind:json="i" v-bind:engine="brief_view"/>
-
 export default {
   props: ['detailed'],
   data: function () {
@@ -21,19 +29,26 @@ export default {
           'title': 'todo',
           'description': 'this is a todo list',
           'time': '1234-12-32',
+          'is_dir': false
         },
         {
           'title': 'post',
           'description': 'A post here',
           'time': '1989-12-12',
+          'is_dir': false
         },
         {
           'title': 'reminder',
           'description': 'some reminder here',
           'time': '89-12-12',
+          'is_dir': true
         },
       ],
-      'view-engine': 'plain-view'
+      env: {
+        'debug': true,
+        'refresh': 0,
+        'view-engine': 'plain-view'
+      }
     }
   },
   methods: {
@@ -47,9 +62,9 @@ export default {
   computed: {
     bindViewComponent: function () {
       if (this.detailed)
-        return 'detail-' + this['view-engine']
+        return 'detail-' + this.env['view-engine']
       else
-        return 'brief-' + this['view-engine']
+        return 'brief-' + this.env['view-engine']
     }
   }
 }
