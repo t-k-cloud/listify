@@ -1,15 +1,33 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Component_sayhello from './sayhello.vue'
+/* 
+ * The default export for the vue NPM package is
+ * runtime only, as here we need the template compiler,
+ * we include vue in the following way, which includes
+ * both the runtime and the template compiler.
+ */
+import Vue from 'vue/dist/vue.esm.js'
+import Router from 'vue-router'
+import Sorry from './sorry.vue'
 
+/* close console.log on production tips */
 Vue.config.productionTip = false
 
-var mainVue = new Vue({
-  template: '<app></app>',
-  components: {
-    //'app': Component_sayhello
-  },
-  render: h => h(Component_sayhello)
+Vue.use(Router)
+
+var routes = new Router({
+  mode: 'history', // or 'hash'
+  routes: [
+    { path: '/private', component: Sorry, props: {why: "this is private place!", joke: false}  },
+    { path: '*',        component: Sorry, props: {why: "404 not found!", joke: true}  }
+  ]
 })
 
-mainVue.$mount('#app')
+var Joke = Vue.component('joke', {
+  template: '<h3>How do robots eat guacamole? With computer chips.</h3>'
+})
+
+new Vue({
+  router: routes,
+  template: '<router-view></router-view>',
+  components: { Joke }
+}).$mount('#app')
+

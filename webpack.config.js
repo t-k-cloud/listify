@@ -17,11 +17,21 @@ module.exports = {
 	},
 	module: {
 		rules: [
-			{ test: /\.vue$/, use: 'vue-loader' }
+			{ test: /\.vue$/, use: 'vue-loader' },
+			{ test: /\.css$/, use: [
+				'style-loader', 'css-loader'
+				/* need both here to both inject the CSS and
+				 * convert CSS to JavaScript module. */
+			] }
 		]
+	},
+	resolve: {
+		alias: {
+		}
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
+			favicon: 'assets/favicon.ico',
 			hash: true, /* cache busting */
 			template: __dirname + '/src/index-template.html',
 			filename: 'index.html' /* default goes to ./dist */
@@ -30,6 +40,7 @@ module.exports = {
 	],
 	devServer: {
 		contentBase: __dirname + '/dist/index.html',
-		port: 8080
+		port: 8080,
+		historyApiFallback: true /* make history-mode routing possible */
 	}
 }
