@@ -1,6 +1,7 @@
 {
   "scripts": {
     "dev": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline",
+    "watch": "./node_modules/webpack-cli/bin/cli.js -w",
     "build": "webpack -p --display-error-details"
   },
   "devDependencies": {
@@ -14,6 +15,10 @@
     "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "connect-history-api-fallback": "^1.5.0",
+    "express": "^4.16.4",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1"
   }

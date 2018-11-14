@@ -46,8 +46,19 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   methods: {
+    openDir: function () {
+      axios.get(this.path).
+      then((res) => {
+        console.log(res.data)
+      })
+    },
+    deleAll: function () {
+      console.log("delete all")
+    },
     clone: function (idx) {
       console.log("clone " + idx)
     },
@@ -85,12 +96,12 @@ export default {
   },
   props: ['detailed'],
   watch: {
-	descending: function (val) {
-		this.clicked_idx = -1
-	},
-	sortby: function (val) {
-		this.clicked_idx = -1
-	}
+  descending: function (val) {
+    this.clicked_idx = -1
+  },
+  sortby: function (val) {
+    this.clicked_idx = -1
+  }
   },
   data: function () {
     return {

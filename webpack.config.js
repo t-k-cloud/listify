@@ -40,7 +40,7 @@ module.exports = {
 	],
 	devServer: {
 		contentBase: __dirname + '/dist/index.html',
-		port: 8080,
+		port: 8820,
 		historyApiFallback: true /* make history-mode routing possible */
 	}
 }
