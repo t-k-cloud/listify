@@ -84,6 +84,14 @@ export default {
     }
   },
   props: ['detailed'],
+  watch: {
+	descending: function (val) {
+		this.clicked_idx = -1
+	},
+	sortby: function (val) {
+		this.clicked_idx = -1
+	}
+  },
   data: function () {
     return {
       'descending': false,
