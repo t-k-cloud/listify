@@ -44,8 +44,9 @@
   </div>
   </div>
 
-<pre v-show="env.debug" style="white-space: pre-wrap;">
+<pre v-show="debug" style="white-space: pre-wrap;">
 {{items}}
+{{env}}
 </pre>
 
 </div>
@@ -164,7 +165,8 @@ export default {
       'sortby': '',
       'clicked_idx': -1,
       'items': [],
-      env: {}
+      env: {},
+      debug: false
     }
   },
   computed: {
