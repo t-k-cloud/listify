@@ -1,6 +1,10 @@
 <template>
 <div>
-  <h3 style="word-wrap: break-word"> {{ '/' + path_arr.join('/') }} </h3>
+  <h3 style="word-wrap: break-word">
+  <span v-for="(p, idx) in path_arr">
+    <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
+  </span>
+  </h3>
   <div style="position: relative;">
     <select v-model="sortby">
       <option v-for="key in sortable_keys"
@@ -52,6 +56,10 @@ export default {
     dele: function (idx) {
       console.log("dele " + idx)
     },
+    get_navi_addr: function (idx) {
+      var prefix_arr = this.path_arr.slice(0, idx + 1)
+      return '/list/' + prefix_arr.join('/')
+    },
     click_item: function (item, idx) {
       if (item._dir)
         this.$router.push({
@@ -71,7 +79,6 @@ export default {
   },
   mounted: function () {
     if (this.env.default_sort_key) {
-      console.log(this.env.default_sort_key)
       this.sortby = this.env.default_sort_key;
     }
   },
@@ -89,10 +96,28 @@ export default {
           'time': 1234,
         },
         {
+          'title': 'todo',
+          'description': 'this is a todo list',
+          'url': 'https://google.com',
+          'time': 1234,
+        },
+        {
+          'title': 'todo',
+          'description': 'this is a todo list',
+          'url': 'https://google.com',
+          'time': 1234,
+        },
+        {
           'title': 'post',
-          'description': 'A post here, bla bla bla bla',
+          'description': 'A post here, bla bla bla bla bla bla bla blabla bla bla bla',
           'url': 'https://baidu.com',
           'time': 1989,
+        },
+        {
+          'title': 'post2',
+          'description': 'A post here, again',
+          'url': 'https://360.com',
+          'time': 1991,
         },
         {
           'unread': 3,
@@ -161,9 +186,12 @@ div.item {
   padding-top: 30px;
 }
 div.item:active {
-  background-color: grey;
+  background-color: #eff0f1;
 }
-span.dir {
+.dir:hover {
+  cursor: pointer;
+}
+.dir, .div:visited {
   color: blue;
 }
 </style>
