@@ -111,9 +111,11 @@ export default {
     },
     dele: function (idx) {
       const item = this.items[idx]
+      console.log(item)
       var rest = '/delete/'
       rest += this.path_arr.join('/')
-      rest += '/' + item._file
+      if (!this.singleJsonFile)
+        rest += '/' + item._file
       console.log('[delete] ' + rest)
       var vm = this
       axios.get(rest).

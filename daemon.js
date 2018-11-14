@@ -65,7 +65,7 @@ function ls(p) {
         const q = p + '/' + fname
         if (is_json_file(q) && fname != magic_json_name) {
           var j = json_cat(q)
-          j['_file'] = fname // inject dir flag
+          j['_file'] = fname // inject file flag
           ret.push(j)
         } else if (is_magic_dir(q)) {
           var j = json_cat(q)
@@ -75,7 +75,9 @@ function ls(p) {
       })
       return ret
     } else if (is_json_file(p)) {
-      return [json_cat(p)];
+      var j = json_cat(p)
+      j['_file'] = path.basename(p) // inject file flag
+      return [j];
     }
   } else {
     return [];
