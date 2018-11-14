@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios from 'axios' /* AJAX request lib */
 
 export default {
   methods: {
     set_unset: function () {
-      /* set view-engine if not set */
+      /* set default view-engine if not set */
       if (!this.env['view-engine'])
         this.env['view-engine'] = "plain-view"
       /* set default_sort_key if not set */
