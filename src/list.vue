@@ -2,7 +2,8 @@
 <div>
   <h3 style="word-wrap: break-word">
   <span v-for="(p, idx) in path_arr">
-    <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
+    <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link>
+    <span v-if="idx != path_arr.length - 1">/</span>
   </span>
   </h3>
   <div style="position: relative;">
@@ -37,7 +38,7 @@
   </div>
   </div>
 
-<pre v-show="env.debug">
+<pre v-show="env.debug" style="white-space: pre-wrap;">
 {{items}}
 </pre>
 
@@ -96,18 +97,6 @@ export default {
           'time': 1234,
         },
         {
-          'title': 'todo',
-          'description': 'this is a todo list',
-          'url': 'https://google.com',
-          'time': 1234,
-        },
-        {
-          'title': 'todo',
-          'description': 'this is a todo list',
-          'url': 'https://google.com',
-          'time': 1234,
-        },
-        {
           'title': 'post',
           'description': 'A post here, bla bla bla bla bla bla bla blabla bla bla bla',
           'url': 'https://baidu.com',
@@ -133,7 +122,7 @@ export default {
       env: {
         'no_sort_keys': ['title', 'description'],
         'default_sort_key': 'time',
-        'debug': false,
+        'debug': true,
         'refresh': 0,
         'detailed': true,
         'view-engine': 'plain-view'
