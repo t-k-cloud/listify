@@ -67,6 +67,7 @@ export default {
       axios.get(this.path).
       then((res) => {
         const j = res.data
+        // console.log(j)
         vm.env = j['env']
         vm.items = j['list']
         vm.set_unset()

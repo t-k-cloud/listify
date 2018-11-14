@@ -63,9 +63,13 @@ function ls(p) {
       fs.readdirSync(p).
       forEach((fname) => {
         const q = p + '/' + fname
-        if (is_json_file(q) || is_magic_dir(q))
-          if (fname !== magic_json_name)
-            ret.push(json_cat(q))
+        if (is_json_file(q) && fname != magic_json_name) {
+          ret.push(json_cat(q))
+        } else if (is_magic_dir(q)) {
+          var j = json_cat(q)
+          j['_dir'] = fname // inject dir flag
+          ret.push(j)
+        }
       })
       return ret
     } else if (is_json_file(p)) {
