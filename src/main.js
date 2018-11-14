@@ -11,6 +11,8 @@ Vue.config.productionTip = false
 import Router from 'vue-router'
 import Sorry from './sorry.vue'
 import ListView from './list.vue'
+import DelayBtn from './delay-btn.vue'
+Vue.component('delay-btn', DelayBtn)
 
 /* import view engines */
 import plainView from './engines/plain-view.vue'
@@ -19,6 +21,7 @@ Vue.component('plain-view', plainView)
 Vue.component('plain-view-detail', plainViewDetail)
 
 const components = {
+  DelayBtn,
   plainView
 }
 

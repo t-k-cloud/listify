@@ -96,16 +96,26 @@ function env(p) {
   }
 }
 
-app.get('/list/*', function (req, res) {
-  const path_arr = req.params[0].split('/')
+function resolve(p) {
+  const path_arr = p.split('/')
   const root = path_arr.shift()
   const uri = path_arr.join('/')
   const root_dir = root_dir_map[root]
-  const p = root_dir + '/' + uri
+  return root_dir + '/' + uri
+}
+
+app.get('/list/*', function (req, res) {
+  const p = resolve(req.params[0])
   console.log('[list] ' + p)
   res.json({
     'env': env(p),
     'list': ls(p)
+  })
+}).get('/delete/*', function (req, res) {
+  const p = resolve(req.params[0])
+  console.log('[delete] ' + p)
+  fs.unlink(p, (err) => {
+    res.json({'res': 'successful'})
   })
 });
 

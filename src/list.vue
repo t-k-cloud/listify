@@ -20,23 +20,25 @@
     <input type="checkbox" v-model="descending">Desc</input>
     <div style="position: absolute; right: 0; top: 0">
       <button @click="openDir()">Open dir</button>
-      <button @click="deleAll()">Delete all</button>
+      <delay-btn @click="deleAll()" label="Dele all" @fire="deleAll()"/>
     </div>
   </div>
 
   <hr/>
 
   <div style="position: relative;">
-  <div v-for="(i, idx) in sorted_items" class="item" @click="click_item(i, idx)">
-    <span class="dir" v-if="i._dir">
-      {{i._dir}}/
-    </span>
-    <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
-    <div style="display: flex" v-if="!i._dir && idx == clicked_idx">
-        <input style="flex: 1" type="button" value="Clone" @click.stop="clone(idx)"/>
-        <input style="flex: 1" type="button" value="Detail" @click.stop="detail(idx)"
-         v-if="env.detailed && !singleJsonFile"/>
-        <input style="flex: 1" type="button" value="Dele" @click.stop="dele(idx)"/>
+  <div v-for="(i, idx) in sorted_items">
+    <div class="item" @click="click_item(i, idx)">
+      <span class="dir" v-if="i._dir">
+        {{i._dir}}/
+      </span>
+      <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
+    </div>
+    <div style="display: flex" v-show="!i._dir && idx == clicked_idx">
+      <input class="item-btn" type="button" value="Clone" @click="clone(idx)"/>
+      <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
+       v-if="env.detailed && !singleJsonFile"/>
+      <delay-btn class="item-btn" label="Dele" @fire="dele(idx)"/>
     </div>
     <hr/>
   </div>
@@ -75,6 +77,7 @@ export default {
         vm.env = j['env']
         vm.items = j['list']
         vm.set_unset()
+        this.clicked_idx = -1
       })
     },
     openDir: function () {
@@ -82,6 +85,20 @@ export default {
     },
     deleAll: function () {
       console.log("delete all")
+      var restList = []
+      var vm = this
+      this.items.forEach((item, idx) => {
+        if (item._file) { // not a dir
+          var rest = '/delete/'
+          rest += vm.path_arr.join('/')
+          rest += '/' + item._file
+          restList.push(rest)
+        }
+      })
+      restList.forEach((rest, idx) => {
+        axios.get(rest).
+        then((res) => { vm.update() })
+      })
     },
     clone: function (idx) {
       console.log("clone " + idx)
@@ -93,7 +110,14 @@ export default {
       })
     },
     dele: function (idx) {
-      console.log("dele " + idx)
+      const item = this.items[idx]
+      var rest = '/delete/'
+      rest += this.path_arr.join('/')
+      rest += '/' + item._file
+      console.log('[delete] ' + rest)
+      var vm = this
+      axios.get(rest).
+      then((res) => { vm.update() })
     },
     get_navi_addr: function (idx) {
       var prefix_arr = this.path_arr.slice(0, idx + 1)
@@ -203,5 +227,10 @@ div.item:active {
 }
 .dir, .div:visited {
   color: blue;
+}
+input.item-btn {
+  min-height: 30px;
+  flex: 1;
+  margin-top: 20px;
 }
 </style>
