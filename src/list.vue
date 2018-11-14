@@ -82,7 +82,10 @@ export default {
       })
     },
     openDir: function () {
-      console.log("open dir")
+      var link = '/droppy/#/'
+      link += this.path_arr.join('/')
+      console.log('[open] ' + link)
+      window.open(link, '_blank');
     },
     deleAll: function () {
       console.log("delete all")
