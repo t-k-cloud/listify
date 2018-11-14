@@ -2,11 +2,15 @@
 <div>
   <h3 style="word-wrap: break-word">
   <span v-for="(p, idx) in path_arr">
-    <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link>
-    <span v-if="idx != path_arr.length - 1">/</span>
+    <span v-if="idx == path_arr.length - 1">
+      <a class="dir" @click="update()">{{p}}</a>
+    </span>
+    <span v-else>
+      <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
+    </span>
   </span>
   </h3>
-  <div style="position: relative;">
+  <div style="position: relative;" v-if="!singleJsonFile">
     <select v-model="sortby">
       <option v-for="key in sortable_keys"
       @click="sortBy()" v-bind:value="key">
@@ -31,7 +35,7 @@
     <div style="display: flex" v-if="!i._dir && idx == clicked_idx">
         <input style="flex: 1" type="button" value="Clone" @click.stop="clone(idx)"/>
         <input style="flex: 1" type="button" value="Detail" @click.stop="detail(idx)"
-         v-if="env.detailed"/>
+         v-if="env.detailed && !singleJsonFile"/>
         <input style="flex: 1" type="button" value="Dele" @click.stop="dele(idx)"/>
     </div>
     <hr/>
@@ -83,7 +87,10 @@ export default {
       console.log("clone " + idx)
     },
     detail: function (idx) {
-      console.log("detail " + idx)
+      const item = this.items[idx]
+      this.$router.push({
+        path: this.path + '/' + item._file
+      })
     },
     dele: function (idx) {
       console.log("dele " + idx)
@@ -117,7 +124,6 @@ export default {
     next()
     this.update()
   },
-  props: ['detailed'],
   watch: {
     descending: function (val) {
       this.clicked_idx = -1
@@ -136,11 +142,19 @@ export default {
     }
   },
   computed: {
-    bindViewComponent: function () {
-      if (this.detailed)
-        return 'detail-' + this.env['view-engine']
+    singleJsonFile: function () {
+      const l = this.path_arr.length
+      const base = this.path_arr[l - 1]
+      if (base.split('.').pop() === 'json')
+        return true
       else
-        return 'brief-' + this.env['view-engine']
+        return false
+    },
+    bindViewComponent: function () {
+      if (this.singleJsonFile)
+        return this.env['view-engine'] + '-detail'
+      else
+        return this.env['view-engine']
     },
     path_arr: function () {
       const path = this.$route.path

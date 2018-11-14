@@ -64,7 +64,9 @@ function ls(p) {
       forEach((fname) => {
         const q = p + '/' + fname
         if (is_json_file(q) && fname != magic_json_name) {
-          ret.push(json_cat(q))
+          var j = json_cat(q)
+          j['_file'] = fname // inject dir flag
+          ret.push(j)
         } else if (is_magic_dir(q)) {
           var j = json_cat(q)
           j['_dir'] = fname // inject dir flag

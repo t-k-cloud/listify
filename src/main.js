@@ -14,7 +14,9 @@ import ListView from './list.vue'
 
 /* import view engines */
 import plainView from './engines/plain-view.vue'
-Vue.component('brief-plain-view', plainView)
+import plainViewDetail from './engines/plain-view-detail.vue'
+Vue.component('plain-view', plainView)
+Vue.component('plain-view-detail', plainViewDetail)
 
 const components = {
   plainView
@@ -26,8 +28,7 @@ Vue.use(Router)
 var routes = new Router({
   mode: 'hash',
   routes: [
-    { path: '/list/*', component: ListView, props: {detailed: false} },
-    { path: '/detail/*', component: ListView, props: {detailed: true} },
+    { path: '/list/*', component: ListView },
     { path: '/edit/*', component: ListView },
     { path: '/private', component: Sorry, props: {why: "this is private place!"}  },
     { path: '*',        component: Sorry, props: {why: "404 not found!"}  }

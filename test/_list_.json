@@ -1,4 +1,5 @@
 {
   "name": "test",
+  "detailed": true,
   "view-engine": "plain-view"
 }
