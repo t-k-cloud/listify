@@ -19,11 +19,13 @@ const root_dir_map = {
 }
 
 function is_dir(p) {
+  if (!fs.existsSync(p)) return false
   var stats = fs.lstatSync(p)
   return stats.isDirectory()
 }
 
 function is_file(p) {
+  if (!fs.existsSync(p)) return false
   var stats = fs.lstatSync(p)
   return stats.isFile()
 }
@@ -62,7 +64,8 @@ function ls(p) {
       forEach((fname) => {
         const q = p + '/' + fname
         if (is_json_file(q) || is_magic_dir(q))
-          ret.push(json_cat(q))
+          if (fname !== magic_json_name)
+            ret.push(json_cat(q))
       })
       return ret
     } else if (is_json_file(p)) {

@@ -50,11 +50,30 @@ import axios from 'axios'
 
 export default {
   methods: {
-    openDir: function () {
+    set_unset: function () {
+      /* set view-engine if not set */
+      if (!this.env['view-engine'])
+        this.env['view-engine'] = "plain-view"
+      /* set default_sort_key if not set */
+      if (this.env.default_sort_key)
+        this.sortby = this.env.default_sort_key;
+      else if (this.items.length > 0) {
+        this.sortby = Object.keys(this.items[0])[0];
+      }
+    },
+    update: function () {
+      console.log('[update] ' + this.path)
+      var vm = this
       axios.get(this.path).
       then((res) => {
-        console.log(res.data)
+        const j = res.data
+        vm.env = j['env']
+        vm.items = j['list']
+        vm.set_unset()
       })
+    },
+    openDir: function () {
+      console.log("open dir")
     },
     deleAll: function () {
       console.log("delete all")
@@ -90,62 +109,29 @@ export default {
     }
   },
   mounted: function () {
-    if (this.env.default_sort_key) {
-      this.sortby = this.env.default_sort_key;
-    }
+    this.update()
+  },
+  beforeRouteUpdate: function (to, from, next) {
+    this.name = to.params.name
+    next()
+    this.update()
   },
   props: ['detailed'],
   watch: {
-  descending: function (val) {
-    this.clicked_idx = -1
-  },
-  sortby: function (val) {
-    this.clicked_idx = -1
-  }
+    descending: function (val) {
+      this.clicked_idx = -1
+    },
+    sortby: function (val) {
+      this.clicked_idx = -1
+    }
   },
   data: function () {
     return {
       'descending': false,
       'sortby': '',
       'clicked_idx': -1,
-      'items': [
-        {
-          'title': 'todo',
-          'description': 'this is a todo list',
-          'url': 'https://google.com',
-          'time': 1234,
-        },
-        {
-          'title': 'post',
-          'description': 'A post here, bla bla bla bla bla bla bla blabla bla bla bla',
-          'url': 'https://baidu.com',
-          'time': 1989,
-        },
-        {
-          'title': 'post2',
-          'description': 'A post here, again',
-          'url': 'https://360.com',
-          'time': 1991,
-        },
-        {
-          'unread': 3,
-          '_dir': 'others'
-        },
-        {
-          'title': 'reminder',
-          'description': 'some reminder here',
-          'url': 'https://dodo.com',
-          'time': 3721,
-        },
-      ],
-      env: {
-        'no_sort_keys': ['title', 'description'],
-        'default_sort_key': 'time',
-        'debug': true,
-        'refresh': 0,
-        'detailed': true,
-        'view-engine': 'plain-view'
-      }
+      'items': [],
+      env: {}
     }
   },
   computed: {
@@ -168,6 +154,7 @@ export default {
     },
     sortable_keys: function () {
       var set = {}
+      if (this.items.length == 0) return []
       this.items.forEach((item, idx) => {
         Object.keys(item).forEach((k) => {
           if (this.allow_sort(k)) set[k] = true

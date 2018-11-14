@@ -1,12 +1,11 @@
 <template>
 <span>
   <span v-if="json._dir">
-  ({{json.unread}} unread)
+  {{json}}
   </span>
 
   <span v-else>
-  [ {{json.title}}, {{json.description}} {{json.time}} ] <br/>
-  {{json.url}}
+  {{json}}
   </span>
 </span>
 </template>

@@ -1,3 +1,4 @@
 {
-  "name": "test"
+  "name": "test",
+  "view-engine": "plain-view"
 }

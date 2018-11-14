@@ -1,0 +1,30 @@
+[
+  {
+    "title": "todo",
+    "description": "this is a todo list",
+    "url": "https://google.com",
+    "time": 1234
+  },
+  {
+    "title": "post",
+    "description": "A post here, bla bla bla bla bla bla bla blabla bla bla bla",
+    "url": "https://baidu.com",
+    "time": 1989
+  },
+  {
+    "title": "post2",
+    "description": "A post here, again",
+    "url": "https://360.com",
+    "time": 1991
+  },
+  {
+    "unread": 3,
+    "_dir": "others"
+  },
+  {
+    "title": "reminder",
+    "description": "some reminder here",
+    "url": "https://dodo.com",
+    "time": 3721
+  }
+]
