@@ -105,7 +105,11 @@ export default {
       })
     },
     clone: function (idx) {
-      console.log("clone " + idx)
+      const item = this.items[idx]
+      var path = '/edit/'
+          path += this.path_arr.join('/')
+          path += '/' + item._file
+      this.$router.push({path})
     },
     detail: function (idx) {
       const item = this.items[idx]
