@@ -13,7 +13,9 @@
   <input type="button" value="reset" @click="reset()"/>
 </div>
 <pre>{{resp}}</pre>
-<pre v-if="debug">{{hierarchy_json}}</pre>
+<pre v-if="debug" style="white-space: pre-wrap;">
+{{hierarchy_json}}
+</pre>
 </div>
 </template>
 
