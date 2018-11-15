@@ -228,7 +228,8 @@ export default {
 </script>
 <style>
 div.item {
-  padding-top: 30px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 div.item:active {
   background-color: #eff0f1;
