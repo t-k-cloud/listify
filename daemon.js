@@ -119,6 +119,16 @@ app.get('/list/*', function (req, res) {
   fs.unlink(p, (err) => {
     res.json({'res': 'successful'})
   })
+}).post('/save/*', function (req, res) {
+  const p = resolve(req.params[0])
+  const json_str = JSON.stringify(req.body)
+  console.log('[save] ' + p)
+  fs.writeFile(p, json_str, (err) => {
+    if (err)
+      res.json({'error': err})
+    else
+      res.json({'successful': p})
+  })
 });
 
 process.on('SIGINT', function() {

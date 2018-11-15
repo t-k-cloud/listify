@@ -12,6 +12,7 @@
   <input type="button" value="save"  @click="save()"/>
   <input type="button" value="reset" @click="reset()"/>
 </div>
+<pre>{{resp}}</pre>
 <pre v-if="debug">{{hierarchy_json}}</pre>
 </div>
 </template>
@@ -34,6 +35,7 @@ export default {
       path = '/list/' + path
       console.log('[update] ' + path)
       var vm = this
+      /* send GET request */
       axios.get(path).
       then((res) => {
         const data = res.data
@@ -48,6 +50,19 @@ export default {
     },
     quote: function (k) {
       this.json[k] = `"${this.json[k]}"`
+    },
+    save: function () {
+      const fname = this.hierarchy_json._file
+      var dir_arr = this.path_arr.slice()
+      dir_arr.pop()
+      var path = dir_arr.join('/')
+      path = '/save/' + path + '/' + fname
+      var vm = this
+      console.log('[save] ' + path)
+      /* send POST request */
+      axios.post(path, this.hierarchy_json).
+      then((res) => { vm.resp = res.data }).
+      catch((err) => { vm.resp = err; })
     },
     reset: function () {
       const r = confirm('Sure to reset?')
@@ -80,6 +95,7 @@ export default {
   data: function () {
     return {
       debug: true,
+      resp: '[yet to save]',
       reset_json: {},
       json: {}
     }
