@@ -11,7 +11,7 @@ Vue.config.productionTip = false
 import Router from 'vue-router'
 import Sorry from './sorry.vue'
 import ListView from './list.vue'
-import EditView from './edit.vue'
+import CloneView from './clone.vue'
 import DelayBtn from './delay-btn.vue'
 Vue.component('delay-btn', DelayBtn)
 
@@ -33,7 +33,7 @@ var routes = new Router({
   mode: 'hash',
   routes: [
     { path: '/list/*', component: ListView },
-    { path: '/edit/*', component: EditView },
+    { path: '/clone/*', component: CloneView },
     { path: '/private', component: Sorry, props: {why: "this is private place!"}  },
     { path: '*',        component: Sorry, props: {why: "404 not found!"}  }
   ]

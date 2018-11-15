@@ -1,0 +1,12 @@
+{
+  "hello": "world",
+  "age": 30,
+  "nest": {
+    "name": "Keith",
+    "father": {
+      "name": "Smith"
+    }
+  },
+  "dow": [1, 3, 5],
+  "letters": ["a", "b", "c"]
+}

@@ -106,7 +106,7 @@ export default {
     },
     clone: function (idx) {
       const item = this.items[idx]
-      var path = '/edit/'
+      var path = '/clone/'
           path += this.path_arr.join('/')
           path += '/' + item._file
       this.$router.push({path})
