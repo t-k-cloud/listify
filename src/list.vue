@@ -75,7 +75,7 @@ export default {
       if (!this.env['view-engine'])
         this.env['view-engine'] = "plain-view"
       /* set default sort key */
-      if (this.items.length > 0)
+      if (this.env.sortable_keys)
         this.sortby = this.env.sortable_keys[0];
     },
     update: function () {

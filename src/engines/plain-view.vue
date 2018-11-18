@@ -1,11 +1,11 @@
 <template>
 <span>
   <span v-if="json._dir">
-  {{json}}
+  {{json._dir}}/
   </span>
 
   <span v-else>
-  {{json}}
+  {{json._file}}
   </span>
 </span>
 </template>
