@@ -38,7 +38,7 @@
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </div>
     <div v-if="!i._dir">
-      <div style="display: flex" v-if="idx == clicked_idx">
+      <div style="display: flex" v-show="idx == clicked_idx">
         <input class="item-btn" type="button" value="Clone" @click="clone(idx)"
          v-if="env.allow_clone"/>
         <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
