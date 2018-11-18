@@ -171,8 +171,8 @@ export default {
         this.clicked_idx = idx;
     },
     allow_sort: function (key) {
-      if (this.env.no_sort_keys)
-        return !this.env.no_sort_keys.includes(key);
+      if (this.env.sortable_keys)
+        return this.env.sortable_keys.includes(key);
       else
         return true;
     }

@@ -66,6 +66,18 @@ function json_cat(p) {
   return {}
 }
 
+function cnt(p) {
+  if (fs.existsSync(p)) {
+    if (is_magic_dir(p)) {
+      const f = fs.readdirSync(p)
+      return f.length
+    } else {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 function ls(p) {
   if (fs.existsSync(p)) {
     if (is_magic_dir(p)) {
@@ -80,6 +92,7 @@ function ls(p) {
         } else if (is_magic_dir(q)) {
           var j = json_cat(q)
           j['_dir'] = fname // inject dir flag
+          j['_dir_num_files'] = cnt(q)
           ret.push(j)
         }
       })

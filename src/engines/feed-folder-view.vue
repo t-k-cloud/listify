@@ -4,7 +4,7 @@
     {{json.title}}
     <span class="small"> {{json.url}} </span>
     <span style="float: right">
-      (unread: {{json.unread}}) (failed: {{json.failed}})
+      (unread: {{json._dir_num_files - 2}}) (failed: {{json.failed}})
     </span>
     <br/>
     <a target="_blank" v-bind:href="json.url" @click.stop=""> {{json.url}} </a>
