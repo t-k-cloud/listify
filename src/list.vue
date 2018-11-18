@@ -74,12 +74,9 @@ export default {
       /* set default view-engine if not set */
       if (!this.env['view-engine'])
         this.env['view-engine'] = "plain-view"
-      /* set default_sort_key if not set */
-      if (!this.env.default_sort_key)
-        this.sortby = this.sortable_keys[0];
-      else if (this.items.length > 0) {
-        this.sortby = Object.keys(this.items[0])[0];
-      }
+      /* set default sort key */
+      if (this.items.length > 0)
+        this.sortby = this.env.sortable_keys[0];
     },
     update: function () {
       console.log('[update] ' + this.path)
@@ -231,14 +228,15 @@ export default {
       return path.replace(/\/$/, "")
     },
     sortable_keys: function () {
-      var set = {}
+      var ret = []
       if (this.items.length == 0) return []
       this.items.forEach((item, idx) => {
         Object.keys(item).forEach((k) => {
-          if (this.allow_sort(k)) set[k] = true
+          if (this.allow_sort(k))
+            ret.push(k)
         })
       })
-      return Object.keys(set)
+      return ret
     },
     sorted_items: function (items) {
       var vm = this;
