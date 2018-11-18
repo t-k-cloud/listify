@@ -2,7 +2,7 @@ var process = require('process');
 var express = require('express');
 var bodyParser = require('body-parser');
 var history = require('connect-history-api-fallback'); // handle refresh for SPA
-var fs = require('fs');
+var fs = require('fs-extra') // has extra functions like "rm -f"
 var path = require('path')
 
 var app = express();
@@ -129,8 +129,8 @@ app.get('/list/*', function (req, res) {
 }).get('/delete/*', function (req, res) {
   const p = resolve(req.params[0])
   console.log('[delete] ' + p)
-  fs.unlink(p, (err) => {
-    res.json({'res': 'successful'})
+  fs.remove(p, (err) => {
+    res.json({'res': err})
   })
 }).post('/save/*', function (req, res) {
   const p = resolve(req.params[0])

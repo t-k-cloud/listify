@@ -10,15 +10,20 @@
     </span>
   </span>
   </h3>
-  <div style="position: relative;" v-if="!singleJsonFile">
-    <select v-model="sortby">
-      <option v-for="key in sortable_keys"
-      @click="sortBy()" v-bind:value="key">
-        Sort by "{{key}}"
-      </option>
-    </select>
-    <input type="checkbox" v-model="descending">Desc</input>
-    <div style="position: absolute; right: 0; top: 0">
+  <div style="display: flex; flex-wrap: wrap;" v-if="!singleJsonFile">
+    <div style="">
+      <select v-model="sortby">
+        <option v-for="key in sortable_keys"
+        @click="sortBy()" v-bind:value="key">
+          Sort by "{{key}}"
+        </option>
+      </select>
+      <input type="checkbox" v-model="descending">Desc</input>
+    </div>
+    <div style="">
+      <input type="checkbox" v-model="show_folder_dele">DirBtn</input>
+    </div>
+    <div style="margin-left: auto;">
       <button @click="openDir()">Open dir</button>
       <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
     </div>
@@ -32,13 +37,21 @@
     <div class="item" @click="click_item(i, idx)">
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </div>
-    <div style="display: flex" v-show="!i._dir && idx == clicked_idx">
-      <input class="item-btn" type="button" value="Clone" @click="clone(idx)"
-       v-if="env.allow_clone"/>
-      <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
-       v-if="env.detailed && !singleJsonFile"/>
-      <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"
-       @active="dele_active($event)" @clear="dele_clear($event)"/>
+    <div v-if="!i._dir">
+      <div style="display: flex" v-if="idx == clicked_idx">
+        <input class="item-btn" type="button" value="Clone" @click="clone(idx)"
+         v-if="env.allow_clone"/>
+        <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
+         v-if="env.detailed && !singleJsonFile"/>
+        <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"
+         @active="dele_active($event)" @clear="dele_clear($event)"/>
+      </div>
+    </div>
+    <div v-else>
+      <div style="display: flex" v-if="show_folder_dele">
+        <delay-btn class="item-btn" label="Delete folder" @fire="dele(idx)"
+         @active="dele_active($event)" @clear="dele_clear($event)"/>
+      </div>
     </div>
     <hr/>
   </div>
@@ -122,12 +135,12 @@ export default {
     },
     dele_active: function (ev) {
       var btn_elm = ev.toElement
-      var item_elm = btn_elm.parentElement.parentElement
+      var item_elm = btn_elm.parentElement.parentElement.parentElement
       item_elm.style['background-color'] = "grey"
     },
     dele_clear: function (ev) {
       var btn_elm = ev.toElement
-      var item_elm = btn_elm.parentElement.parentElement
+      var item_elm = btn_elm.parentElement.parentElement.parentElement
       item_elm.style['background-color'] = "white"
     },
     dele: function (idx) {
@@ -135,7 +148,7 @@ export default {
       var rest = '/delete/'
       rest += this.path_arr.join('/')
       if (!this.singleJsonFile) {
-        basename = item._file || item._dir
+        const basename = item._file || item._dir
         rest += '/' + basename
       }
       console.log('[delete] ' + rest)
@@ -183,6 +196,7 @@ export default {
   data: function () {
     return {
       'descending': false,
+      'show_folder_dele': false,
       'sortby': '',
       'clicked_idx': -1,
       'items': [],
