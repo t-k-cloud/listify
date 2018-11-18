@@ -134,8 +134,10 @@ export default {
       const item = this.items[idx]
       var rest = '/delete/'
       rest += this.path_arr.join('/')
-      if (!this.singleJsonFile)
-        rest += '/' + item._file
+      if (!this.singleJsonFile) {
+        basename = item._file || item._dir
+        rest += '/' + basename
+      }
       console.log('[delete] ' + rest)
       var vm = this
       axios.get(rest).
