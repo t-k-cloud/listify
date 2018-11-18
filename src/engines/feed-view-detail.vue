@@ -1,8 +1,8 @@
 <template>
 <span>
-  {{json.title}}
-  <br/>
+  <h2>{{json.title}}</h2>
   <a target="_blank" v-bind:href="json.link" @click.stop=""> {{json.link}} </a>
+  <br/><br/>
   <p v-html="convert_html(json.desc)"></p>
 </span>
 </template>
@@ -25,6 +25,6 @@ export default {
 
 <style scoped>
 a {
-  font-size: 1.4em;
+  font-size: 1.0em;
 }
 </style>
