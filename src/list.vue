@@ -20,7 +20,7 @@
     <input type="checkbox" v-model="descending">Desc</input>
     <div style="position: absolute; right: 0; top: 0">
       <button @click="openDir()">Open dir</button>
-      <delay-btn @click="deleAll()" label="Dele all"@fire="deleAll()"/>
+      <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
     </div>
   </div>
 
@@ -33,10 +33,11 @@
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </div>
     <div style="display: flex" v-show="!i._dir && idx == clicked_idx">
-      <input class="item-btn" type="button" value="Clone" @click="clone(idx)"/>
+      <input class="item-btn" type="button" value="Clone" @click="clone(idx)"
+       v-if="env.allow_clone"/>
       <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
        v-if="env.detailed && !singleJsonFile"/>
-      <delay-btn class="item-btn" label="Dele" @fire="dele(idx)"
+      <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"
        @active="dele_active($event)" @clear="dele_clear($event)"/>
     </div>
     <hr/>
