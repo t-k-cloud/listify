@@ -23,8 +23,10 @@ Vue.component('plain-view-detail', plainViewDetail)
 
 import feedFolderView from './engines/feed-folder-view.vue'
 import feedView from './engines/feed-view.vue'
+import feedViewDetail from './engines/feed-view-detail.vue'
 Vue.component('feed-folder-view', feedFolderView)
 Vue.component('feed-view', feedView)
+Vue.component('feed-view-detail', feedViewDetail)
 
 const components = {
   DelayBtn,
