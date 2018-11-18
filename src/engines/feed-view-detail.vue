@@ -23,8 +23,6 @@ export default {
 }
 </script>
 
-<style scoped>
-a {
-  font-size: 1.0em;
-}
+<style>
+img { max-width: 100%; max-height: 500px; }
 </style>
