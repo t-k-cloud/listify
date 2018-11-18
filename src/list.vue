@@ -20,25 +20,24 @@
     <input type="checkbox" v-model="descending">Desc</input>
     <div style="position: absolute; right: 0; top: 0">
       <button @click="openDir()">Open dir</button>
-      <delay-btn @click="deleAll()" label="Dele all" @fire="deleAll()"/>
+      <delay-btn @click="deleAll()" label="Dele all"@fire="deleAll()"/>
     </div>
   </div>
 
   <hr/>
 
   <div style="position: relative;">
-  <div v-for="(i, idx) in sorted_items">
+  <div v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
+    <!-- here ":key" prevents vue re-use dom elements -->
     <div class="item" @click="click_item(i, idx)">
-      <span class="dir" v-if="i._dir">
-        {{i._dir}}/
-      </span>
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </div>
     <div style="display: flex" v-show="!i._dir && idx == clicked_idx">
       <input class="item-btn" type="button" value="Clone" @click="clone(idx)"/>
       <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
        v-if="env.detailed && !singleJsonFile"/>
-      <delay-btn class="item-btn" label="Dele" @fire="dele(idx)"/>
+      <delay-btn class="item-btn" label="Dele" @fire="dele(idx)"
+       @active="dele_active($event)" @clear="dele_clear($event)"/>
     </div>
     <hr/>
   </div>
@@ -117,9 +116,21 @@ export default {
         path: this.path + '/' + item._file
       })
     },
+    mk_item_key: function (idx, j) {
+      return j._file || j._dir
+    },
+    dele_active: function (ev) {
+      var btn_elm = ev.toElement
+      var item_elm = btn_elm.parentElement.parentElement
+      item_elm.style['background-color'] = "grey"
+    },
+    dele_clear: function (ev) {
+      var btn_elm = ev.toElement
+      var item_elm = btn_elm.parentElement.parentElement
+      item_elm.style['background-color'] = "white"
+    },
     dele: function (idx) {
       const item = this.items[idx]
-      console.log(item)
       var rest = '/delete/'
       rest += this.path_arr.join('/')
       if (!this.singleJsonFile)

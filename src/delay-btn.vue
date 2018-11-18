@@ -1,5 +1,5 @@
 <template>
-<input style="flex: 1" type="button" v-bind:value="val" @click="onclick()"/>
+<input style="flex: 1" type="button" v-bind:value="val" @click="onclick($event)"/>
 </template>
 
 <script>
@@ -21,8 +21,9 @@ export default {
     }
   },
   methods: {
-    onclick: function () {
+    onclick: function (ev) {
       if (!this.counting) {
+        this.$emit('active', ev)
         this.counting = true
         this.cur_number = this.cntdown || 3
         var vm = this
@@ -35,6 +36,7 @@ export default {
           }
         }, 1000);
       } else {
+        this.$emit('clear', ev)
         this.counting = false
         clearInterval(this.intval)
       }

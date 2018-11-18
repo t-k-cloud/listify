@@ -21,10 +21,17 @@ import plainViewDetail from './engines/plain-view-detail.vue'
 Vue.component('plain-view', plainView)
 Vue.component('plain-view-detail', plainViewDetail)
 
+import feedFolderView from './engines/feed-folder-view.vue'
+import feedView from './engines/feed-view.vue'
+Vue.component('feed-folder-view', feedFolderView)
+Vue.component('feed-view', feedView)
+
 const components = {
   DelayBtn,
-  plainView
+  plainView,
+  feedFolderView,
 }
+/* =================== */
 
 /* router settings */
 Vue.use(Router)

@@ -15,7 +15,8 @@ app.listen(port)
 
 const magic_json_name = '_list_.json'
 const root_dir_map = {
-  "test-root": "./test"
+  "test-root": "./test",
+  "feeds": "../feeder/test",
 }
 
 function is_dir(p) {
@@ -44,6 +45,15 @@ function is_magic_dir(p) {
   return is_dir(p) && is_json_file(try_p)
 }
 
+function is_hidden_file(fname) {
+  var regex = /_\w+_\.json/g
+  var found = fname.match(regex)
+  if (found && found.length > 0)
+    return true
+  else
+    return false
+}
+
 function json_cat(p) {
   const json = p + '/' + magic_json_name
   if (is_json_file(p)) {
@@ -63,7 +73,7 @@ function ls(p) {
       fs.readdirSync(p).
       forEach((fname) => {
         const q = p + '/' + fname
-        if (is_json_file(q) && fname != magic_json_name) {
+        if (is_json_file(q) && !is_hidden_file(fname)) {
           var j = json_cat(q)
           j['_file'] = fname // inject file flag
           ret.push(j)
@@ -78,8 +88,11 @@ function ls(p) {
       var j = json_cat(p)
       j['_file'] = path.basename(p) // inject file flag
       return [j];
+    } else {
+      console.log(`[no ${magic_json_name}] ${p}`)
     }
   } else {
+    console.log(`[not exists] ${p}`)
     return [];
   }
 }
