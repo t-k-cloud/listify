@@ -13,7 +13,10 @@ export default {
   props: ['json'],
   methods: {
 	update_short_str: function(str) {
-		return str.split(' ')[0]
+		if (str)
+			return str.split(' ')[0]
+		else
+			return ''
 	}
   }
 }
