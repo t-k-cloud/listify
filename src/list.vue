@@ -218,8 +218,9 @@ export default {
     },
     path_arr: function () {
       const path = this.$route.path
-      const arr = path.split('/')
+      var arr = path.split('/')
       arr.splice(0, 2)
+      arr = arr.map(x => decodeURIComponent(x))
       return arr
     },
     path: function () {
