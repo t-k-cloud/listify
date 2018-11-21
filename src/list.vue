@@ -11,7 +11,8 @@
       </span>
     </span>
     </h3>
-    <div style="display: flex; flex-wrap: wrap;" v-show="!singleJsonFile">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between"
+         v-show="!singleJsonFile">
       <div style="">
         <select v-model="sortby">
           <option v-for="key in sortable_keys"
@@ -24,7 +25,7 @@
       <div style="">
         <input type="checkbox" v-model="show_folder_dele">DirBtn</input>
       </div>
-      <div style="margin-left: auto;">
+      <div style="padding-right: 20px;">
         <button @click="openDir()">Open dir</button>
         <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
       </div>
@@ -32,7 +33,7 @@
     <hr/>
   </div>
 
-  <div style="position: relative;">
+  <div style="position: relative;" class="list">
   <div v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
     <!-- here ":key" prevents vue re-use dom elements -->
     <div class="item" @click="click_item(i, idx)">
@@ -274,12 +275,22 @@ export default {
 }
 </script>
 <style>
-div.stick-top {
+html, body {
+  margin: 0;
+  padding: 0;
+}
+#navbar {
   background-color: white;
-  z-index: 99999;
   width: 100%;
+  padding: 8px 8px 8px 8px;
+}
+div.stick-top {
+  z-index: 99999;
   position: fixed;
   top: 0;
+}
+div.list {
+  padding: 8px 8px 8px 8px;
 }
 div.item {
   padding-top: 10px;
