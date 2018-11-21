@@ -21,16 +21,13 @@
           </option>
         </select>
         <input type="checkbox" v-model="descending">Desc</input>
-      </div>
-      <div style="">
         <input type="checkbox" v-model="show_folder_dele">DirBtn</input>
       </div>
-      <div style="padding-right: 20px;">
+      <div style="margin-right: 20px;">
         <button @click="openDir()">Open dir</button>
         <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
       </div>
     </div>
-    <hr/>
   </div>
 
   <div style="position: relative;" class="list">
@@ -283,6 +280,7 @@ html, body {
   background-color: white;
   width: 100%;
   padding: 8px 8px 8px 8px;
+  box-shadow: 0px 5px 5px #aaaaaa;
 }
 div.stick-top {
   z-index: 99999;
