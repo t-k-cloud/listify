@@ -1,16 +1,16 @@
 <template>
 <div>
-  <div id="navbar">
-    <h3 style="word-wrap: break-word">
-    <span v-for="(p, idx) in path_arr">
-      <span v-if="idx == path_arr.length - 1">
-        <a class="dir" @click="update()">{{p}}</a>
-      </span>
-      <span v-else>
-        <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
-      </span>
+  <h3 style="word-wrap: break-word">
+  <span v-for="(p, idx) in path_arr">
+    <span v-if="idx == path_arr.length - 1">
+      <a class="dir" @click="update()">{{p}}</a>
     </span>
-    </h3>
+    <span v-else>
+      <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
+    </span>
+  </span>
+  </h3>
+  <div id="navbar">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between"
          v-show="!singleJsonFile">
       <div style="">
