@@ -10,7 +10,7 @@
     </span>
   </span>
   </h3>
-  <div style="display: flex; flex-wrap: wrap;" v-if="!singleJsonFile">
+  <div style="display: flex; flex-wrap: wrap;" v-show="!singleJsonFile">
     <div style="">
       <select v-model="sortby">
         <option v-for="key in sortable_keys"
@@ -75,7 +75,7 @@ export default {
       if (!this.env['view-engine'])
         this.env['view-engine'] = "plain-view"
       /* set default sort key */
-      if (this.env.sortable_keys)
+      if (this.sortby === '' && this.env.sortable_keys)
         this.sortby = this.env.sortable_keys[0];
     },
     update: function () {
