@@ -1,35 +1,36 @@
 <template>
 <div>
-  <h3 style="word-wrap: break-word">
-  <span v-for="(p, idx) in path_arr">
-    <span v-if="idx == path_arr.length - 1">
-      <a class="dir" @click="update()">{{p}}</a>
+  <div id="navbar">
+    <h3 style="word-wrap: break-word">
+    <span v-for="(p, idx) in path_arr">
+      <span v-if="idx == path_arr.length - 1">
+        <a class="dir" @click="update()">{{p}}</a>
+      </span>
+      <span v-else>
+        <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
+      </span>
     </span>
-    <span v-else>
-      <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
-    </span>
-  </span>
-  </h3>
-  <div style="display: flex; flex-wrap: wrap;" v-show="!singleJsonFile">
-    <div style="">
-      <select v-model="sortby">
-        <option v-for="key in sortable_keys"
-        @click="sortBy()" v-bind:value="key">
-          Sort by "{{key}}"
-        </option>
-      </select>
-      <input type="checkbox" v-model="descending">Desc</input>
+    </h3>
+    <div style="display: flex; flex-wrap: wrap;" v-show="!singleJsonFile">
+      <div style="">
+        <select v-model="sortby">
+          <option v-for="key in sortable_keys"
+          @click="sortBy()" v-bind:value="key">
+            Sort by "{{key}}"
+          </option>
+        </select>
+        <input type="checkbox" v-model="descending">Desc</input>
+      </div>
+      <div style="">
+        <input type="checkbox" v-model="show_folder_dele">DirBtn</input>
+      </div>
+      <div style="margin-left: auto;">
+        <button @click="openDir()">Open dir</button>
+        <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
+      </div>
     </div>
-    <div style="">
-      <input type="checkbox" v-model="show_folder_dele">DirBtn</input>
-    </div>
-    <div style="margin-left: auto;">
-      <button @click="openDir()">Open dir</button>
-      <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
-    </div>
+    <hr/>
   </div>
-
-  <hr/>
 
   <div style="position: relative;">
   <div v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
@@ -88,7 +89,6 @@ export default {
         vm.env = j['env']
         vm.items = j['list']
         vm.set_unset()
-        this.clicked_idx = -1
       })
     },
     openDir: function () {
@@ -111,7 +111,10 @@ export default {
       })
       restList.forEach((rest, idx) => {
         axios.get(rest).
-        then((res) => { vm.update() })
+        then((res) => {
+          this.clicked_idx = -1;
+          vm.update()
+        })
       })
     },
     clone: function (idx) {
@@ -151,7 +154,10 @@ export default {
       // console.log('[delete] ' + rest)
       var vm = this
       axios.get(rest).
-      then((res) => { vm.update() })
+      then((res) => {
+        this.clicked_idx = -1;
+        vm.update()
+      })
     },
     get_navi_addr: function (idx) {
       var prefix_arr = this.path_arr.slice(0, idx + 1)
@@ -176,6 +182,10 @@ export default {
   },
   mounted: function () {
     this.update()
+
+    window.addEventListener('scroll', (event) => {
+      this.scrollY = Math.round(window.scrollY);
+    });
   },
   beforeRouteUpdate: function (to, from, next) {
     this.name = to.params.name
@@ -188,6 +198,15 @@ export default {
     },
     sortby: function (val) {
       this.clicked_idx = -1
+    },
+    scrollY: function (val) {
+      var navbar = document.getElementById("navbar")
+      // console.log(`${window.pageYOffset} >= ${navbar.offsetTop}`)
+      if (window.pageYOffset > navbar.offsetTop) {
+        navbar.classList.add('stick-top')
+      } else {
+        navbar.classList.remove('stick-top')
+      }
     }
   },
   data: function () {
@@ -196,6 +215,7 @@ export default {
       'show_folder_dele': false,
       'sortby': '',
       'clicked_idx': -1,
+      'scrollY': 0,
       'items': [],
       env: {},
       debug: false
@@ -254,6 +274,13 @@ export default {
 }
 </script>
 <style>
+div.stick-top {
+  background-color: white;
+  z-index: 99999;
+  width: 100%;
+  position: fixed;
+  top: 0;
+}
 div.item {
   padding-top: 10px;
   padding-bottom: 10px;
