@@ -39,7 +39,7 @@ const components = {
 Vue.use(Router)
 
 var routes = new Router({
-  mode: 'hash',
+  mode: 'history',
   routes: [
     { path: '/list/*', component: ListView },
     { path: '/clone/*', component: CloneView },
