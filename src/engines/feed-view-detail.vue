@@ -16,7 +16,7 @@ export default {
     convert_html: function(content) {
       const fields = this.json.link.split('/')
       const link_root = [fields[0], fields[2]].join('//')
-      console.log('[link root] ' + link_root)
+      // console.log('[link root] ' + link_root)
       return absolutify(content, link_root)
     }
   }

@@ -38,8 +38,22 @@ const components = {
 /* router settings */
 Vue.use(Router)
 
+const scrollBehavior = function (to, from, savedPosition) {
+  // console.log(`Route ${from.path} => ${to.path}`)
+
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (savedPosition)
+        resolve(savedPosition)
+      else
+        resolve({ x: 0, y: 0 })
+    }, 500)
+  })
+}
+
 var routes = new Router({
   mode: 'history',
+  scrollBehavior,
   routes: [
     { path: '/list/*', component: ListView },
     { path: '/clone/*', component: CloneView },

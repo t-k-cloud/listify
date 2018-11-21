@@ -79,7 +79,7 @@ export default {
         this.sortby = this.env.sortable_keys[0];
     },
     update: function () {
-      console.log('[update] ' + this.path)
+      // console.log('[update] ' + this.path)
       var vm = this
       axios.get(this.path).
       then((res) => {
@@ -94,11 +94,11 @@ export default {
     openDir: function () {
       var link = '/droppy/#/'
       link += this.path_arr.join('/')
-      console.log('[open] ' + link)
+      // console.log('[open] ' + link)
       window.open(link, '_blank');
     },
     deleAll: function () {
-      console.log("delete all")
+      // console.log("delete all")
       var restList = []
       var vm = this
       this.items.forEach((item, idx) => {
@@ -148,7 +148,7 @@ export default {
         const basename = item._file || item._dir
         rest += '/' + basename
       }
-      console.log('[delete] ' + rest)
+      // console.log('[delete] ' + rest)
       var vm = this
       axios.get(rest).
       then((res) => { vm.update() })
