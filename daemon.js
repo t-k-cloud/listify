@@ -16,7 +16,8 @@ app.listen(port)
 const magic_json_name = '_list_.json'
 const root_dir_map = {
   "test-root": "./test",
-  "feeds": "../feeder/test",
+  //"feeds": "../feeder/test",
+  "feeds": "../feeds"
 }
 
 function is_dir(p) {
