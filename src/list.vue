@@ -232,7 +232,7 @@ export default {
       if (this.items.length == 0) return []
       this.items.forEach((item, idx) => {
         Object.keys(item).forEach((k) => {
-          if (this.allow_sort(k))
+          if (this.allow_sort(k) && !ret.includes(k))
             ret.push(k)
         })
       })
