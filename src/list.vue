@@ -256,6 +256,7 @@ export default {
 div.item {
   padding-top: 10px;
   padding-bottom: 10px;
+  word-wrap: break-word;
 }
 div.item:active {
   background-color: #eff0f1;
