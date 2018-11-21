@@ -1,7 +1,7 @@
 <template>
 <span>
   <div v-if="json._dir">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
+    <div class="folder-view">
       <div>
         {{json.title}}
         <span class="extra-small"> {{json.url}} </span>
@@ -10,7 +10,7 @@
         <span class="small">
           unread: {{json._dir_num_files - 2}},
           failed: {{json.failed}},
-          last-update: {{json['last-update']}}
+          {{update_short_str(json['last-update'])}}
         </span>
       </div>
     </div>
@@ -26,11 +26,22 @@
 
 <script>
 export default {
-  props: ['json']
+  props: ['json'],
+  methods: {
+	update_short_str: function(str) {
+		return str.split(' ')[0]
+	}
+  }
 }
 </script>
 
 <style scoped>
+div.folder-view {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	user-select: none;
+}
 a {
   font-size: 1.4em;
 }

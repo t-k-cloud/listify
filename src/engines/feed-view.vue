@@ -1,20 +1,28 @@
 <template>
-<span>
+<div class="item-view">
   {{json.title}}
   <br/>
-  <span class="small">fetch time: {{json['fetch-time']}}</span>
+  <span class="small">fetch time: {{update_short_str(json['fetch-time'])}}</span>
   <br/>
   <a target="_blank" v-bind:href="json.link" @click.stop=""> {{json.link}} </a>
-</span>
+</div>
 </template>
 
 <script>
 export default {
-  props: ['json']
+  props: ['json'],
+  methods: {
+	update_short_str: function(str) {
+		return str.split(' ')[0]
+	}
+  }
 }
 </script>
 
 <style scoped>
+div.item-view {
+	user-select: none;
+}
 a {
   font-size: 1.4em;
 }
