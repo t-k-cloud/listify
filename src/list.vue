@@ -1,5 +1,6 @@
 <template>
 <div>
+  <div style="margin-left: 20px">
   <h3 style="word-wrap: break-word">
   <span v-for="(p, idx) in path_arr">
     <span v-if="idx == path_arr.length - 1">
@@ -10,6 +11,7 @@
     </span>
   </span>
   </h3>
+  </div>
   <div id="navbar">
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between"
          v-show="!singleJsonFile">
