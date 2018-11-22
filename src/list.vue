@@ -105,7 +105,7 @@ export default {
       var vm = this
       this.items.forEach((item, idx) => {
         if (item._file) { // not a dir
-          var rest = '/delete/'
+          var rest = prefix_uri + '/delete/'
           rest += vm.path_arr.join('/')
           rest += '/' + item._file
           restList.push(rest)
@@ -121,7 +121,7 @@ export default {
     },
     clone: function (idx) {
       const item = this.items[idx]
-      var path = '/clone/'
+      var path = prefix_uri + '/clone/'
           path += this.path_arr.join('/')
           path += '/' + item._file
       this.$router.push({path})
@@ -147,7 +147,7 @@ export default {
     },
     dele: function (idx) {
       const item = this.items[idx]
-      var rest = '/delete/'
+      var rest = prefix_uri + '/delete/'
       rest += this.path_arr.join('/')
       if (!this.singleJsonFile) {
         const basename = item._file || item._dir

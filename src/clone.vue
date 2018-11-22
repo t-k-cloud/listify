@@ -23,6 +23,8 @@
 import axios from 'axios' /* AJAX request lib */
 const uuid = require('uuid/v1') /* UUID lib */
 
+const prefix_uri = '/listify'
+
 export default {
   methods: {
     linear: function (json) {
@@ -34,7 +36,7 @@ export default {
     },
     update: function () {
       var path = this.path_arr.join('/')
-      path = '/list/' + path
+      path = prefix_uri + '/list/' + path
       console.log('[update] ' + path)
       var vm = this
       /* send GET request */
@@ -58,7 +60,7 @@ export default {
       var dir_arr = this.path_arr.slice()
       dir_arr.pop()
       var path = dir_arr.join('/')
-      path = '/save/' + path + '/' + fname
+      path = prefix_uri + '/save/' + path + '/' + fname
       var vm = this
       console.log('[save] ' + path)
       /* send POST request */
