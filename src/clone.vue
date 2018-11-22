@@ -83,7 +83,7 @@ export default {
     path_arr: function () {
       const path = this.$route.path
       const arr = path.split('/')
-      arr.splice(0, 2)
+      arr.splice(0, 3)
       return arr
     },
     hierarchy_json: function () {

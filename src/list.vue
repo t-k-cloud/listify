@@ -6,7 +6,7 @@
     <span v-if="idx == path_arr.length - 1">
       <a class="dir" @click="update()">{{p}}</a>
     </span>
-    <span v-else-if="idx > 0">
+    <span v-else>
       <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
     </span>
   </span>
@@ -163,7 +163,7 @@ export default {
     },
     get_navi_addr: function (idx) {
       var prefix_arr = this.path_arr.slice(0, idx + 1)
-      return prefix_uri + '/' + prefix_arr.join('/')
+      return prefix_uri + '/list/' + prefix_arr.join('/')
     },
     click_item: function (item, idx) {
       if (item._dir)
@@ -241,7 +241,7 @@ export default {
     path_arr: function () {
       const path = this.$route.path
       var arr = path.split('/')
-      arr.splice(0, 2)
+      arr.splice(0, 3)
       arr = arr.map(x => decodeURIComponent(x))
       return arr
     },
