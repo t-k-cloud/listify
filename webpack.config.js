@@ -13,7 +13,7 @@ module.exports = {
 		app: __dirname + '/src/main.js'
 	},
 	output: { /* required field */
-		publicPath: '/', /* history-mode workaround */
+		publicPath: '/listify/', /* history-mode workaround */
 		filename: 'bundle.js'
 	},
 	module: {

@@ -1,4 +1,4 @@
-/* 
+/*
  * The default export for the vue NPM package is
  * runtime only, as here we need the template compiler,
  * we include vue in the following way, which includes
@@ -51,14 +51,18 @@ const scrollBehavior = function (to, from, savedPosition) {
   })
 }
 
+const prefix_uri = '/listify'
+
 var routes = new Router({
   mode: 'history',
   scrollBehavior,
   routes: [
-    { path: '/list/*', component: ListView },
-    { path: '/clone/*', component: CloneView },
-    { path: '/private', component: Sorry, props: {why: "this is private place!"}  },
-    { path: '*',        component: Sorry, props: {why: "404 not found!"}  }
+    { path: prefix_uri + '/list/*', component: ListView },
+    { path: prefix_uri + '/clone/*', component: CloneView },
+    { path: prefix_uri + '/private',
+      component: Sorry, props: {why: "this is private place!"}  },
+    { path: prefix_uri + '/listify/*',
+      component: Sorry, props: {why: "404 not found!"}  }
   ]
 })
 

@@ -5,13 +5,7 @@ var history = require('connect-history-api-fallback'); // handle refresh for SPA
 var fs = require('fs-extra') // has extra functions like "rm -f"
 var path = require('path')
 
-var app = express();
-app.use(history({verbose: true}))
-app.use(express.static('./dist'))
-app.use(bodyParser.json())
 const port = 8820
-console.log('Listening on port ' + port)
-app.listen(port)
 
 const magic_json_name = '_list_.json'
 const root_dir_map = {
@@ -19,6 +13,16 @@ const root_dir_map = {
   //"feeds": "../feeder/test",
   "feeds": "../feeds"
 }
+
+const prefix_uri = '/listify'
+
+var app = express();
+app.use(history({verbose: true}))
+app.use(express.static('./dist')) /* for /foo (after rewriting) */
+app.use(prefix_uri, express.static('./dist')) /* for /listify/foo */
+app.use(bodyParser.json())
+console.log('Listening on port ' + port)
+app.listen(port)
 
 function is_dir(p) {
   if (!fs.existsSync(p)) return false
@@ -133,20 +137,20 @@ function resolve(p) {
   return root_dir + '/' + uri
 }
 
-app.get('/list/*', function (req, res) {
+app.get(prefix_uri + '/list/*', function (req, res) {
   const p = resolve(req.params[0])
   console.log('[list] ' + p)
   res.json({
     'env': env(p),
     'list': ls(p)
   })
-}).get('/delete/*', function (req, res) {
+}).get(prefix_uri + '/delete/*', function (req, res) {
   const p = resolve(req.params[0])
   console.log('[delete] ' + p)
   fs.remove(p, (err) => {
     res.json({'res': err})
   })
-}).post('/save/*', function (req, res) {
+}).post(prefix_uri + '/save/*', function (req, res) {
   const p = resolve(req.params[0])
   const json_str = JSON.stringify(req.body)
   console.log('[save] ' + p)

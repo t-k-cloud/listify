@@ -6,7 +6,7 @@
     <span v-if="idx == path_arr.length - 1">
       <a class="dir" @click="update()">{{p}}</a>
     </span>
-    <span v-else>
+    <span v-else-if="idx > 0">
       <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
     </span>
   </span>
@@ -68,6 +68,8 @@
 
 <script>
 import axios from 'axios' /* AJAX request lib */
+
+const prefix_uri = '/listify'
 
 export default {
   methods: {
@@ -161,7 +163,7 @@ export default {
     },
     get_navi_addr: function (idx) {
       var prefix_arr = this.path_arr.slice(0, idx + 1)
-      return '/list/' + prefix_arr.join('/')
+      return prefix_uri + '/' + prefix_arr.join('/')
     },
     click_item: function (item, idx) {
       if (item._dir)
