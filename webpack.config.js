@@ -40,7 +40,7 @@ module.exports = {
 		new VueLoaderPlugin()
 	],
 	devServer: {
-		contentBase: __dirname + '/dist/index.html',
+		contentBase: __dirname + '/dist',
 		port: 8820,
 		historyApiFallback: true /* make history-mode routing possible */
 	}
