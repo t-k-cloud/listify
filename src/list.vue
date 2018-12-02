@@ -35,7 +35,7 @@
 
   <v-container grid-list-xl>
   <v-layout column>
-  <v-flex v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
+  <v-flex v-for="(i, idx) in locate(sorted_items)" :key="mk_item_key(idx, i)">
     <!-- here ":key" prevents vue re-use dom elements -->
     <v-card>
     <v-card-text v-bind:class="{clickable: !singleJsonFile}"
@@ -81,6 +81,7 @@ sortby: {{sortby}}
 import axios from 'axios' /* AJAX request lib */
 
 const prefix_uri = '/listify'
+const MAX_ITEMS_PER_PAGE = 15
 
 export default {
   methods: {
@@ -158,6 +159,13 @@ export default {
         return this.env.sortable_keys.includes(key);
       else
         return true;
+    },
+    locate: function (items) {
+      if (this.debug)
+        return items
+      const begin = (this.page - 1) * MAX_ITEMS_PER_PAGE
+      const end = begin + MAX_ITEMS_PER_PAGE
+      return items.slice(begin, end)
     }
   },
   mounted: function () {
@@ -198,7 +206,8 @@ export default {
   },
   computed: {
     total_pages: function () {
-      return 3
+      let pages = this.items.length / MAX_ITEMS_PER_PAGE
+      return Math.ceil(pages)
     },
     singleJsonFile: function () {
       const l = this.path_arr.length
