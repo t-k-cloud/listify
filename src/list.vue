@@ -1,12 +1,13 @@
 <template>
 <div>
-  <v-container id="navbar" fluid>
-    <v-layout row wrap>
-    <p class="headline">
-      <v-icon>home</v-icon>
+  <v-container id="navbar" style="word-break: break-all">
+    <v-layout row wrap class="headline">
+      <v-icon>home</v-icon> &nbsp;
       <span v-for="(bread, idx) in path_arr">
         <span v-if="idx == path_arr.length - 1">
-          <a class="clickable" @click="update()">{{bread}}</a>
+          <a class="clickable" @click="update(); scrolltop()">
+            {{bread}}
+          </a>
         </span>
         <span v-else>
           <router-link class="clickable" v-bind:to="get_navi_addr(idx)">
@@ -14,8 +15,9 @@
           </router-link> /
         </span>
       </span>
-    </p>
     </v-layout>
+  </v-container>
+  <v-container>
     <v-layout row wrap justify-space-between v-show="!singleJsonFile">
       <v-flex d-flex md9>
         <v-select small :items="sortable_keys" label="Sort" v-model="sortby"/>
@@ -34,7 +36,7 @@
     <!-- here ":key" prevents vue re-use dom elements -->
     <v-card>
     <v-card-text v-bind:class="{clickable: !singleJsonFile}"
-                 style="word-wrap: break-word" @click="click_item(i, idx)">
+                 style="word-break: break-all" @click="click_item(i, idx)">
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </v-card-text>
     <v-card-actions v-if="!singleJsonFile">
@@ -75,6 +77,9 @@ export default {
       /* set default sort key */
       if (this.sortby === '' && this.env.sortable_keys)
         this.sortby = this.env.sortable_keys[0];
+    },
+    scrolltop: function () {
+      window.scrollTo(0, 0);
     },
     update: function () {
       // console.log('[update] ' + this.path)
