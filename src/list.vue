@@ -1,8 +1,8 @@
 <template>
 <v-app>
-  <div id="navbar" style="word-break: break-all">
-  <v-container>
-    <v-layout row wrap class="headline">
+  <div>
+  <v-container id="navbar" style="word-break: break-all">
+    <v-layout row wrap class="subheading">
       <v-icon>home</v-icon> &nbsp;
       <span v-for="(bread, idx) in path_arr">
         <span v-if="idx == path_arr.length - 1">
@@ -18,7 +18,6 @@
       </span>
     </v-layout>
   </v-container>
-  </div>
 
   <v-container>
     <v-layout row wrap justify-space-between v-show="!singleJsonFile">
@@ -55,6 +54,7 @@
   </v-flex>
   </v-layout>
   </v-container>
+  </div>
 
   <v-container fill-height>
   <v-layout/>
