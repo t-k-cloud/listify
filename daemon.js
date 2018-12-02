@@ -154,7 +154,7 @@ app.get(prefix_uri + '/list/*', function (req, res) {
   const p = resolve(req.params[0])
   console.log('[delete] ' + p)
   fs.remove(p, (err) => {
-    res.json({'res': err})
+    res.json({'res': err, 'basename': path.basename(p)})
   })
 }).post(prefix_uri + '/save/*', function (req, res) {
   const p = resolve(req.params[0])

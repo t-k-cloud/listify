@@ -27,7 +27,8 @@
         <v-checkbox label="debug" v-model="debug"/>
       </v-flex>
       <v-flex d-flex md3>
-        <v-btn @click="openDir()" top>Open in Droppy</v-btn>
+        <v-btn small @click="openDir()" top>Droppy</v-btn>
+        <delay-btn class="item-btn" label="Empty" top @fire="deleAll()"/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -66,6 +67,13 @@
     </v-flex>
   </v-layout>
   </v-container>
+
+  <v-snackbar v-model="snackbar" multi-line>
+  {{ snackbar_text }}
+    <v-btn dark flat @click="snackbar = false">
+      Close
+    </v-btn>
+  </v-snackbar>
 
 <pre v-if="debug">
 {{items}}
@@ -137,6 +145,30 @@ export default {
       axios.get(rest).
       then((res) => {
         vm.update()
+        vm.snackbar = true
+        vm.snackbar_text = `Deleted: ${res.data.basename}`
+      })
+    },
+    deleAll: function () {
+      // console.log("delete all")
+      var restList = []
+      var vm = this
+      this.items.forEach((item, idx) => {
+        if (item._file) { // not a dir
+          var rest = prefix_uri + '/delete/'
+          rest += vm.path_arr.join('/')
+          rest += '/' + item._file
+          restList.push(rest)
+        }
+      })
+      restList.forEach((rest, idx) => {
+          axios.get(rest).
+          then((res) => {
+            this.clicked_idx = -1;
+            vm.update()
+            vm.snackbar = true
+            vm.snackbar_text = `Deleted: ${res.data.basename}`
+          })
       })
     },
     get_navi_addr: function (idx) {
@@ -189,7 +221,7 @@ export default {
       var next = document.getElementById("navbar-next")
       if (navbar === null)
         return
-      console.log(`${window.pageYOffset} >= ${navbar.offsetHeight}`)
+      // console.log(`${window.pageYOffset} >= ${navbar.offsetHeight}`)
       if (window.pageYOffset > navbar.offsetHeight) {
         navbar.classList.add('stick-top')
         next.style.cssText = `margin-top: ${navbar.offsetHeight}px`
@@ -202,6 +234,8 @@ export default {
   data: function () {
     return {
       'descending': false,
+      'snackbar': false,
+      'snackbar_text': '',
       'sortby': '',
       'page': 1,
       'scrollY': 0,
