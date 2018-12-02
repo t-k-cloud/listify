@@ -67,13 +67,6 @@
   </v-layout>
   </v-container>
 
-<pre v-show="debug" style="white-space: pre-wrap;">
-descending: {{descending}}
-sortby: {{sortby}}
-{{env}}
-{{items}}
-</pre>
-
 </v-app>
 </template>
 
@@ -272,6 +265,9 @@ export default {
   box-shadow: 0px 5px 5px #aaaaaa;
 }
 div.stick-top {
+  width: 100%;
+  left: 50%;
+  transform: translate(-50%);
   z-index: 99999;
   position: fixed;
   top: 0;
