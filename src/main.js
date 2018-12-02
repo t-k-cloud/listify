@@ -75,6 +75,6 @@ var routes = new Router({
 /* mount Vue */
 new Vue({
   router: routes,
-  template: '<v-app><router-view/></v-app>',
+  template: '<router-view/>',
   components: components
 }).$mount('#app')

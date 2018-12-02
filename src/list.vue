@@ -1,6 +1,7 @@
 <template>
-<div>
-  <v-container id="navbar" style="word-break: break-all">
+<v-app>
+  <div id="navbar" style="word-break: break-all">
+  <v-container>
     <v-layout row wrap class="headline">
       <v-icon>home</v-icon> &nbsp;
       <span v-for="(bread, idx) in path_arr">
@@ -17,6 +18,8 @@
       </span>
     </v-layout>
   </v-container>
+  </div>
+
   <v-container>
     <v-layout row wrap justify-space-between v-show="!singleJsonFile">
       <v-flex d-flex md9>
@@ -31,7 +34,7 @@
   </v-container>
 
   <v-container grid-list-xl>
-  <v-layout column fill-height>
+  <v-layout column>
   <v-flex v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
     <!-- here ":key" prevents vue re-use dom elements -->
     <v-card>
@@ -40,16 +43,27 @@
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </v-card-text>
     <v-card-actions v-if="!singleJsonFile">
-      <v-layout justify-end row fill-height v-if="!i._dir">
+      <v-layout justify-end row v-if="!i._dir">
         <v-btn small @click="clone(idx)" v-if="env.allow_clone">clone</v-btn>
         <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"/>
       </v-layout>
-      <v-layout justify-end row fill-height v-else>
+      <v-layout justify-end row v-else>
         <delay-btn class="item-btn" label="Delete folder" @fire="dele(idx)"/>
       </v-layout>
     </v-card-actions>
     </v-card>
   </v-flex>
+  </v-layout>
+  </v-container>
+
+  <v-container fill-height>
+  <v-layout/>
+    <v-flex>
+      <v-pagination
+        v-model="page"
+        :length="total_pages"
+      ></v-pagination>
+    </v-flex>
   </v-layout>
   </v-container>
 
@@ -60,7 +74,7 @@ sortby: {{sortby}}
 {{items}}
 </pre>
 
-</div>
+</v-app>
 </template>
 
 <script>
@@ -175,6 +189,7 @@ export default {
     return {
       'descending': false,
       'sortby': '',
+      'page': 1,
       'scrollY': 0,
       'items': [],
       env: {},
@@ -182,6 +197,9 @@ export default {
     }
   },
   computed: {
+    total_pages: function () {
+      return 3
+    },
     singleJsonFile: function () {
       const l = this.path_arr.length
       const base = this.path_arr[l - 1]
