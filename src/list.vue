@@ -67,8 +67,8 @@
   </v-layout>
   </v-container>
 
-  <v-snackbar v-model="snackbar" multi-line>
-    {{ snackbar_text }}
+  <v-snackbar v-model="snackbar" @click="snackbar = false" multi-line>
+    <span style="user-select: none">{{ snackbar_text }}</span>
   </v-snackbar>
 
 <pre v-if="debug">
