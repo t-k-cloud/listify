@@ -61,17 +61,14 @@
   <v-layout/>
     <v-flex>
       <v-pagination v-model="page" circle
-        :total-visible="7" :length="total_pages"
+        :total-visible="5" :length="total_pages"
       ></v-pagination>
     </v-flex>
   </v-layout>
   </v-container>
 
   <v-snackbar v-model="snackbar" multi-line>
-  {{ snackbar_text }}
-    <v-btn dark flat @click="snackbar = false">
-      Close
-    </v-btn>
+    {{ snackbar_text }}
   </v-snackbar>
 
 <pre v-if="debug">
