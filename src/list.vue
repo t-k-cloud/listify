@@ -35,20 +35,20 @@
 
   <v-container grid-list-xl>
   <v-layout column>
-  <v-flex v-for="(i, idx) in locate(sorted_items)" :key="mk_item_key(idx, i)">
+  <v-flex v-for="i in locate(sorted_items)" :key="mk_item_key(i)">
     <!-- here ":key" prevents vue re-use dom elements -->
     <v-card>
     <v-card-text v-bind:class="{clickable: !singleJsonFile}"
-                 style="word-break: break-all" @click="click_item(i, idx)">
+                 style="word-break: break-all" @click="click_item(i)">
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
     </v-card-text>
     <v-card-actions v-if="!singleJsonFile">
       <v-layout justify-end row v-if="!i._dir">
-        <v-btn small @click="clone(idx)" v-if="env.allow_clone">clone</v-btn>
-        <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"/>
+        <v-btn small @click="clone(i)" v-if="env.allow_clone">clone</v-btn>
+        <delay-btn class="item-btn" label="Delete" @fire="dele(i)"/>
       </v-layout>
       <v-layout justify-end row v-else>
-        <delay-btn class="item-btn" label="Delete folder" @fire="dele(idx)"/>
+        <delay-btn class="item-btn" label="Delete folder" @fire="dele(i)"/>
       </v-layout>
     </v-card-actions>
     </v-card>
@@ -116,25 +116,20 @@ export default {
       // console.log('[open] ' + link)
       window.open(link, '_blank');
     },
-    clone: function (idx) {
-      const item = this.items[idx]
+    mk_item_key: function (j) {
+      return j._file || j._dir
+    },
+    clone: function (item) {
       var path = prefix_uri + '/clone/'
           path += this.path_arr.join('/')
           path += '/' + item._file
       this.$router.push({path})
     },
-    mk_item_key: function (idx, j) {
-      return j._file || j._dir
-    },
-    dele: function (idx) {
-      const item = this.items[idx]
+    dele: function (item) {
       var rest = prefix_uri + '/delete/'
       rest += this.path_arr.join('/')
-      if (!this.singleJsonFile) {
-        const basename = item._file || item._dir
-        rest += '/' + basename
-      }
-      // console.log('[delete] ' + rest)
+      const basename = item._file || item._dir
+      rest += '/' + basename
       var vm = this
       axios.get(rest).
       then((res) => {
@@ -169,7 +164,7 @@ export default {
       var prefix_arr = this.path_arr.slice(0, idx + 1)
       return prefix_uri + '/list/' + prefix_arr.join('/')
     },
-    click_item: function (item, idx) {
+    click_item: function (item) {
       if (item._dir) {
         this.$router.push({
           path: this.path + '/' + item._dir
