@@ -1,8 +1,14 @@
 <template>
-<input style="flex: 1" type="button" v-bind:value="val" @click="onclick($event)"/>
+<div>
+<v-btn small color="error" @click="onclick($event)" v-bind="$attrs">
+  {{val}}
+</v-btn>
+</div>
 </template>
 
 <script>
+import 'vuetify/dist/vuetify.min.css'
+
 export default {
   props: ['label', 'cntdown'],
   data: function () {

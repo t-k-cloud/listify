@@ -1,3 +1,5 @@
+const { dependencies } = require('./package.json')
+
 var webpack = require('webpack')
 
 /* HTML template engine */
@@ -23,11 +25,22 @@ module.exports = {
 				'style-loader', 'css-loader'
 				/* need both here to both inject the CSS and
 				 * convert CSS to JavaScript module. */
-			] }
+			]},
+			{
+				test: /\.(eot|woff|woff2|svg|ttf)([\?]?.*)$/,
+				use: [{
+					loader: 'file-loader',
+					options: {
+						outputPath: 'fonts/',
+						publicPath: '/fonts/'
+					}
+				}]
+			}
 		]
 	},
 	resolve: {
 		alias: {
+			vue: 'vue/dist/vue.js'
 		}
 	},
 	plugins: [

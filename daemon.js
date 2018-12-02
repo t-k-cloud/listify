@@ -9,15 +9,21 @@ const port = 8820
 
 const magic_json_name = '_list_.json'
 const root_dir_map = {
-  "test-root": "./test",
-  //"feeds": "../feeder/test",
-  "feeds": "../feeds"
+  "feeds": "../feeds",
+  "test-root": "./test"
 }
 
 const prefix_uri = '/listify'
 
 var app = express();
-app.use(history({verbose: true}))
+app.use(history({
+  rewrites: [
+    { from: /^\/listify\/list\/.*$/, to: '/index.html'},
+    { from: /^\/.*$/, to: (c) => {return c.match[0]}}
+  ],
+  disableDotRule: true,
+  verbose: true
+}))
 app.use(express.static('./dist')) /* for /foo (after rewriting) */
 app.use(prefix_uri, express.static('./dist')) /* for /listify/foo */
 app.use(bodyParser.json())

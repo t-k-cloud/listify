@@ -1,66 +1,61 @@
 <template>
 <div>
-  <div style="margin-left: 20px">
-  <h3 style="word-wrap: break-word">
-  <span v-for="(p, idx) in path_arr">
-    <span v-if="idx == path_arr.length - 1">
-      <a class="dir" @click="update()">{{p}}</a>
-    </span>
-    <span v-else>
-      <router-link class="dir" v-bind:to="get_navi_addr(idx)">{{p}}</router-link> /
-    </span>
-  </span>
-  </h3>
-  </div>
-  <div id="navbar">
-    <div style="display: flex; flex-wrap: wrap; justify-content: space-between"
-         v-show="!singleJsonFile">
-      <div style="">
-        <select v-model="sortby">
-          <option v-for="key in sortable_keys"
-          @click="sortBy()" v-bind:value="key">
-            Sort by "{{key}}"
-          </option>
-        </select>
-        <input type="checkbox" v-model="descending">Desc</input>
-        <input type="checkbox" v-model="show_folder_dele">DirBtn</input>
-      </div>
-      <div style="margin-right: 20px;">
-        <button @click="openDir()">Open dir</button>
-        <delay-btn @click="deleAll()" label="Delete all" @fire="deleAll()"/>
-      </div>
-    </div>
-  </div>
+  <v-container id="navbar" fluid>
+    <v-layout row wrap>
+    <p class="headline">
+      <v-icon>home</v-icon>
+      <span v-for="(bread, idx) in path_arr">
+        <span v-if="idx == path_arr.length - 1">
+          <a class="clickable" @click="update()">{{bread}}</a>
+        </span>
+        <span v-else>
+          <router-link class="clickable" v-bind:to="get_navi_addr(idx)">
+            {{bread}}
+          </router-link> /
+        </span>
+      </span>
+    </p>
+    </v-layout>
+    <v-layout row wrap justify-space-between v-show="!singleJsonFile">
+      <v-flex d-flex md9>
+        <v-select small :items="sortable_keys" label="Sort" v-model="sortby"/>
+        <v-checkbox label="desc" v-model="descending"/>
+        <v-checkbox label="debug" v-model="debug"/>
+      </v-flex>
+      <v-flex d-flex md3>
+        <v-btn @click="openDir()" top>Open in Droppy</v-btn>
+      </v-flex>
+    </v-layout>
+  </v-container>
 
-  <div style="position: relative;" class="list">
-  <div v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
+  <v-container grid-list-xl>
+  <v-layout column fill-height>
+  <v-flex v-for="(i, idx) in sorted_items" :key="mk_item_key(idx, i)">
     <!-- here ":key" prevents vue re-use dom elements -->
-    <div class="item" @click="click_item(i, idx)">
+    <v-card>
+    <v-card-text v-bind:class="{clickable: !singleJsonFile}"
+                 style="word-wrap: break-word" @click="click_item(i, idx)">
       <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
-    </div>
-    <div v-if="!i._dir">
-      <div style="display: flex" v-show="idx == clicked_idx">
-        <input class="item-btn" type="button" value="Clone" @click="clone(idx)"
-         v-if="env.allow_clone"/>
-        <input class="item-btn" type="button" value="Detail" @click="detail(idx)"
-         v-if="env.detailed && !singleJsonFile"/>
-        <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"
-         @active="dele_active($event)" @clear="dele_clear($event)"/>
-      </div>
-    </div>
-    <div v-else>
-      <div style="display: flex" v-if="show_folder_dele">
-        <delay-btn class="item-btn" label="Delete folder" @fire="dele(idx)"
-         @active="dele_active($event)" @clear="dele_clear($event)"/>
-      </div>
-    </div>
-    <hr/>
-  </div>
-  </div>
+    </v-card-text>
+    <v-card-actions v-if="!singleJsonFile">
+      <v-layout justify-end row fill-height v-if="!i._dir">
+        <v-btn small @click="clone(idx)" v-if="env.allow_clone">clone</v-btn>
+        <delay-btn class="item-btn" label="Delete" @fire="dele(idx)"/>
+      </v-layout>
+      <v-layout justify-end row fill-height v-else>
+        <delay-btn class="item-btn" label="Delete folder" @fire="dele(idx)"/>
+      </v-layout>
+    </v-card-actions>
+    </v-card>
+  </v-flex>
+  </v-layout>
+  </v-container>
 
 <pre v-show="debug" style="white-space: pre-wrap;">
-{{items}}
+descending: {{descending}}
+sortby: {{sortby}}
 {{env}}
+{{items}}
 </pre>
 
 </div>
@@ -99,26 +94,6 @@ export default {
       // console.log('[open] ' + link)
       window.open(link, '_blank');
     },
-    deleAll: function () {
-      // console.log("delete all")
-      var restList = []
-      var vm = this
-      this.items.forEach((item, idx) => {
-        if (item._file) { // not a dir
-          var rest = prefix_uri + '/delete/'
-          rest += vm.path_arr.join('/')
-          rest += '/' + item._file
-          restList.push(rest)
-        }
-      })
-      restList.forEach((rest, idx) => {
-        axios.get(rest).
-        then((res) => {
-          this.clicked_idx = -1;
-          vm.update()
-        })
-      })
-    },
     clone: function (idx) {
       const item = this.items[idx]
       var path = prefix_uri + '/clone/'
@@ -126,24 +101,8 @@ export default {
           path += '/' + item._file
       this.$router.push({path})
     },
-    detail: function (idx) {
-      const item = this.items[idx]
-      this.$router.push({
-        path: this.path + '/' + item._file
-      })
-    },
     mk_item_key: function (idx, j) {
       return j._file || j._dir
-    },
-    dele_active: function (ev) {
-      var btn_elm = ev.toElement
-      var item_elm = btn_elm.parentElement.parentElement.parentElement
-      item_elm.style['background-color'] = "grey"
-    },
-    dele_clear: function (ev) {
-      var btn_elm = ev.toElement
-      var item_elm = btn_elm.parentElement.parentElement.parentElement
-      item_elm.style['background-color'] = "white"
     },
     dele: function (idx) {
       const item = this.items[idx]
@@ -157,7 +116,6 @@ export default {
       var vm = this
       axios.get(rest).
       then((res) => {
-        this.clicked_idx = -1;
         vm.update()
       })
     },
@@ -166,14 +124,15 @@ export default {
       return prefix_uri + '/list/' + prefix_arr.join('/')
     },
     click_item: function (item, idx) {
-      if (item._dir)
+      if (item._dir) {
         this.$router.push({
           path: this.path + '/' + item._dir
         })
-      else if (this.clicked_idx == idx)
-        this.clicked_idx = -1;
-      else
-        this.clicked_idx = idx;
+      } else if (this.env.detailed && !this.singleJsonFile) {
+        this.$router.push({
+          path: this.path + '/' + item._file
+        })
+      }
     },
     allow_sort: function (key) {
       if (this.env.sortable_keys)
@@ -195,14 +154,10 @@ export default {
     this.update()
   },
   watch: {
-    descending: function (val) {
-      this.clicked_idx = -1
-    },
-    sortby: function (val) {
-      this.clicked_idx = -1
-    },
     scrollY: function (val) {
       var navbar = document.getElementById("navbar")
+      if (navbar === null)
+        return
       // console.log(`${window.pageYOffset} >= ${navbar.offsetTop}`)
       if (window.pageYOffset > navbar.offsetTop) {
         navbar.classList.add('stick-top')
@@ -214,9 +169,7 @@ export default {
   data: function () {
     return {
       'descending': false,
-      'show_folder_dele': false,
       'sortby': '',
-      'clicked_idx': -1,
       'scrollY': 0,
       'items': [],
       env: {},
@@ -276,14 +229,8 @@ export default {
 }
 </script>
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-}
 #navbar {
   background-color: white;
-  width: 100%;
-  padding: 8px 8px 8px 8px;
   box-shadow: 0px 5px 5px #aaaaaa;
 }
 div.stick-top {
@@ -291,26 +238,7 @@ div.stick-top {
   position: fixed;
   top: 0;
 }
-div.list {
-  padding: 8px 8px 8px 8px;
-}
-div.item {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  word-wrap: break-word;
-}
-div.item:active {
-  background-color: #eff0f1;
-}
-.dir:hover {
+.clickable {
   cursor: pointer;
-}
-.dir, .div:visited {
-  color: blue;
-}
-input.item-btn {
-  min-height: 30px;
-  flex: 1;
-  margin-top: 20px;
 }
 </style>

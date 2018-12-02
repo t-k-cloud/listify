@@ -15,7 +15,7 @@
       </div>
     </div>
     <div>
-      <a target="_blank" v-bind:href="json.url" @click.stop=""> {{json.url}} </a>
+      <a target="_blank" v-bind:href="json.link" @click.stop=""> {{json.link}} </a>
     </div>
   </div>
   <div v-else>

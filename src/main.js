@@ -4,9 +4,15 @@
  * we include vue in the following way, which includes
  * both the runtime and the template compiler.
  */
-import Vue from 'vue/dist/vue.esm.js'
+import Vue from 'vue'
 /* close console.log on production tips */
 Vue.config.productionTip = false
+
+/* vuetify */
+import Vuetify from 'vuetify'
+import 'material-icons/iconfont/material-icons.css'
+import 'vuetify/dist/vuetify.min.css'
+Vue.use(Vuetify)
 
 import Router from 'vue-router'
 import Sorry from './sorry.vue'
@@ -61,7 +67,7 @@ var routes = new Router({
     { path: prefix_uri + '/clone/*', component: CloneView },
     { path: prefix_uri + '/private',
       component: Sorry, props: {why: "this is private place!"}  },
-    { path: prefix_uri + '/listify/*',
+    { path: prefix_uri + '/*',
       component: Sorry, props: {why: "404 not found!"}  }
   ]
 })
@@ -69,6 +75,6 @@ var routes = new Router({
 /* mount Vue */
 new Vue({
   router: routes,
-  template: '<router-view></router-view>',
+  template: '<v-app><router-view/></v-app>',
   components: components
 }).$mount('#app')
