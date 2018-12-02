@@ -16,6 +16,7 @@
           </router-link> /
         </span>
       </span>
+      <span style="margin-left: 10px"> (page {{page}}) </span>
     </v-layout>
   </v-container>
 
@@ -28,7 +29,7 @@
       </v-flex>
       <v-flex d-flex md3>
         <v-btn small @click="openDir()" top>Droppy</v-btn>
-        <delay-btn class="item-btn" label="Empty" top @fire="deleAll()"/>
+        <delay-btn class="item-btn" label="Empty folder" top @fire="deleAll()"/>
       </v-flex>
     </v-layout>
   </v-container>
