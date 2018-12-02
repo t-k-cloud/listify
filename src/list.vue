@@ -59,10 +59,9 @@
 
   <v-container fill-height>
   <v-layout/>
-    <v-flex v-show="total_pages > 1">
-      <v-pagination
-        v-model="page"
-        :length="total_pages"
+    <v-flex>
+      <v-pagination v-model="page" circle
+        :total-visible="7" :length="total_pages"
       ></v-pagination>
     </v-flex>
   </v-layout>
@@ -99,8 +98,6 @@ export default {
         this.sortby = this.env.sortable_keys[0];
       /* set page */
       this.page = parseInt(this.$route.query['page']) || 1
-      if (this.page > this.total_pages)
-        this.page = this.total_pages
     },
     scrolltop: function () {
       window.scrollTo(0, 0);
@@ -214,7 +211,7 @@ export default {
   },
   watch: {
     page: function (val) {
-      this.$router.push({query: { page: this.page}});
+      this.$router.push({query: { page: val}});
     },
     scrollY: function (val) {
       var navbar = document.getElementById("navbar")
