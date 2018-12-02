@@ -2,7 +2,8 @@
 <div class="item-view">
   {{json.title}}
   <br/>
-  <span class="small">fetch time: {{update_short_str(json['fetch-time'])}}</span>
+  <span class="small">fetched: {{update_short_str(json['fetched'])}},</span>
+  <span class="small">updated: {{json['updated']}}</span>
   <br/>
   <a target="_blank" v-bind:href="json.link" @click.stop=""> {{json.link}} </a>
 </div>
@@ -14,7 +15,7 @@ export default {
   methods: {
 	update_short_str: function(str) {
 		if (str)
-			return str.split(' ')[0]
+			return str.split('.')[0]
 		else
 			return ''
 	}

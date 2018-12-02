@@ -10,7 +10,8 @@
         <span class="small">
           unread: {{json._dir_num_files - 2}},
           failed: {{json.failed}},
-          {{update_short_str(json['last-update'])}}
+          last-fetched: {{update_short_str(json['last-fetched'])}},
+          last-updated: {{json['last-updated']}}
         </span>
       </div>
     </div>
@@ -30,7 +31,7 @@ export default {
   methods: {
 	update_short_str: function(str) {
 		if (str)
-			return str.split(' ')[0]
+			return str.split('.')[0]
 		else
 			return ''
 	}
