@@ -92,8 +92,10 @@ export default {
       /* set default sort key */
       if (this.sortby === '' && this.env.sortable_keys)
         this.sortby = this.env.sortable_keys[0];
-      /* set to first page */
-      this.page = 1
+      /* set page */
+      this.page = parseInt(this.$route.query['page']) || 1
+      if (this.page > this.total_pages)
+        this.page = this.total_pages
     },
     scrolltop: function () {
       window.scrollTo(0, 0);
@@ -182,6 +184,9 @@ export default {
     this.update()
   },
   watch: {
+    page: function (val) {
+      this.$router.push({query: { page: this.page}});
+    },
     scrollY: function (val) {
       var navbar = document.getElementById("navbar")
       if (navbar === null)
