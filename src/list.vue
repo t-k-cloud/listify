@@ -19,7 +19,7 @@
     </v-layout>
   </v-container>
 
-  <v-container>
+  <v-container id="navbar-next">
     <v-layout row wrap justify-space-between v-show="!singleJsonFile">
       <v-flex d-flex md9>
         <v-select small :items="sortable_keys" label="Sort" v-model="sortby"/>
@@ -66,6 +66,10 @@
     </v-flex>
   </v-layout>
   </v-container>
+
+<pre v-if="debug">
+{{items}}
+</pre>
 
 </v-app>
 </template>
@@ -182,13 +186,16 @@ export default {
     },
     scrollY: function (val) {
       var navbar = document.getElementById("navbar")
+      var next = document.getElementById("navbar-next")
       if (navbar === null)
         return
-      // console.log(`${window.pageYOffset} >= ${navbar.offsetTop}`)
-      if (window.pageYOffset > navbar.offsetTop) {
+      console.log(`${window.pageYOffset} >= ${navbar.offsetHeight}`)
+      if (window.pageYOffset > navbar.offsetHeight) {
         navbar.classList.add('stick-top')
+        next.style.cssText = `margin-top: ${navbar.offsetHeight}px`
       } else {
         navbar.classList.remove('stick-top')
+        next.style.cssText = `margin-top: 0`
       }
     }
   },
