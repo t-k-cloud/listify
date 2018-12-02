@@ -92,12 +92,13 @@ export default {
       /* set default sort key */
       if (this.sortby === '' && this.env.sortable_keys)
         this.sortby = this.env.sortable_keys[0];
+      /* set to first page */
+      this.page = 1
     },
     scrolltop: function () {
       window.scrollTo(0, 0);
     },
     update: function () {
-      // console.log('[update] ' + this.path)
       var vm = this
       axios.get(this.path).
       then((res) => {
@@ -164,7 +165,7 @@ export default {
       if (this.debug)
         return items
       const begin = (this.page - 1) * MAX_ITEMS_PER_PAGE
-      const end = begin + MAX_ITEMS_PER_PAGE
+      const end = Math.min(items.length, begin + MAX_ITEMS_PER_PAGE)
       return items.slice(begin, end)
     }
   },
