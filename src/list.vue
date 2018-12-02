@@ -58,7 +58,7 @@
 
   <v-container fill-height>
   <v-layout/>
-    <v-flex>
+    <v-flex v-show="total_pages > 1">
       <v-pagination
         v-model="page"
         :length="total_pages"
