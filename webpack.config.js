@@ -32,7 +32,7 @@ module.exports = {
 					loader: 'file-loader',
 					options: {
 						outputPath: 'fonts/',
-						publicPath: '/fonts/'
+						publicPath: '/listify/fonts/'
 					}
 				}]
 			}
