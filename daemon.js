@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var history = require('connect-history-api-fallback'); // handle refresh for SPA
 var fs = require('fs-extra') // has extra functions like "rm -f"
 var path = require('path')
+var expAuth = require('../auth/express-auth.js')
 
 const port = 8820
 
@@ -16,6 +17,8 @@ const root_dir_map = {
 const prefix_uri = '/listify'
 
 var app = express();
+
+/* routing support (history mode) */
 app.use(history({
   rewrites: [
     { from: /^\/listify\/list\/.*$/, to: '/index.html'},
@@ -24,6 +27,15 @@ app.use(history({
   disableDotRule: true,
   verbose: true
 }))
+
+/* authentication middleware */
+var am = expAuth.middleware
+expAuth.init(app, {
+	loginRoute: '/auth/login',
+	verifyUrl: 'http://localhost/auth/token_verify',
+	keyName: 'tk-auth'
+})
+
 app.use(express.static('./dist')) /* for /foo (after rewriting) */
 app.use(prefix_uri, express.static('./dist')) /* for /listify/foo */
 app.use(bodyParser.json())
@@ -150,13 +162,13 @@ app.get(prefix_uri + '/list/*', function (req, res) {
     'env': env(p),
     'list': ls(p)
   })
-}).get(prefix_uri + '/delete/*', function (req, res) {
+}).get(prefix_uri + '/delete/*', am, function (req, res) {
   const p = resolve(req.params[0])
   console.log('[delete] ' + p)
   fs.remove(p, (err) => {
     res.json({'res': err, 'basename': path.basename(p)})
   })
-}).post(prefix_uri + '/save/*', function (req, res) {
+}).post(prefix_uri + '/save/*', am, function (req, res) {
   const p = resolve(req.params[0])
   const json_str = JSON.stringify(req.body)
   console.log('[save] ' + p)

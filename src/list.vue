@@ -126,17 +126,28 @@ export default {
           path += '/' + item._file
       this.$router.push({path})
     },
+    goLogin: function (login) {
+      setTimeout(function() {
+        window.location.href = login + '?next='
+          + encodeURIComponent(window.location.href)
+      }, 2000);
+    },
     dele: function (item) {
       var rest = prefix_uri + '/delete/'
       rest += this.path_arr.join('/')
       const basename = item._file || item._dir
       rest += '/' + basename
       var vm = this
-      axios.get(rest).
-      then((res) => {
-        vm.update()
-        vm.snackbar = true
-        vm.snackbar_text = `Deleted: ${res.data.basename}`
+      axios.get(rest).then((res) => {
+        if (res.data.login) {
+          vm.snackbar = true
+          vm.snackbar_text = `(づ｡◕‿‿◕｡)づ Please login`
+          vm.goLogin(res.data.login)
+        } else {
+          vm.update()
+          vm.snackbar = true
+          vm.snackbar_text = `Deleted: ${res.data.basename}`
+        }
       })
     },
     deleAll: function () {
@@ -154,10 +165,15 @@ export default {
       restList.forEach((rest, idx) => {
           axios.get(rest).
           then((res) => {
-            this.clicked_idx = -1;
-            vm.update()
-            vm.snackbar = true
-            vm.snackbar_text = `Deleted: ${res.data.basename}`
+            if (res.data.login) {
+              vm.snackbar = true
+              vm.snackbar_text = `(づ｡◕‿‿◕｡)づ Please login`
+              vm.goLogin(res.data.login)
+            } else {
+              vm.update()
+              vm.snackbar = true
+              vm.snackbar_text = `Deleted: ${res.data.basename}`
+            }
           })
       })
     },
