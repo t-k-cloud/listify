@@ -239,7 +239,7 @@ export default {
   },
   data: function () {
     return {
-      'descending': false,
+      'descending': true,
       'snackbar': false,
       'snackbar_text': '',
       'sortby': '',
