@@ -112,7 +112,7 @@ export default {
       })
     },
     openDir: function () {
-      var link = '/droppy/#/'
+      var link = '/droppy/#/proj/tkcloud/'
       link += this.path_arr.join('/')
       // console.log('[open] ' + link)
       window.open(link, '_blank');
@@ -229,7 +229,7 @@ export default {
   },
   data: function () {
     return {
-      'descending': false,
+      'descending': true,
       'snackbar': false,
       'snackbar_text': '',
       'sortby': '',
