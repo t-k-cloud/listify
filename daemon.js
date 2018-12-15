@@ -168,6 +168,20 @@ app.get(prefix_uri + '/list/*', function (req, res) {
   fs.remove(p, (err) => {
     res.json({'res': err, 'basename': path.basename(p)})
   })
+}).get(prefix_uri + '/empty/*', am, function (req, res) {
+  const p = resolve(req.params[0])
+  console.log('[empty] ' + p)
+  var cnt = 0
+  ls(p).forEach(j => {
+    const fname = j['_file'] || j['_dir']
+    const path = p + '/' + fname
+    fs.removeSync(path)
+    cnt += 1
+  })
+  res.json({
+    'res': `empty (${cnt} items)`,
+    'basename': path.basename(p)
+  })
 }).post(prefix_uri + '/save/*', am, function (req, res) {
   const p = resolve(req.params[0])
   const json_str = JSON.stringify(req.body)

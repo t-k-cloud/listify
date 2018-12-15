@@ -29,7 +29,7 @@
       </v-flex>
       <v-flex d-flex md3>
         <v-btn small @click="openDir()" top>Droppy</v-btn>
-        <delay-btn class="item-btn" label="Empty folder" top @fire="deleAll()"/>
+        <delay-btn class="item-btn" label="Empty folder" top @fire="empty()" cntdown="3"/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -46,10 +46,10 @@
     <v-card-actions v-if="!singleJsonFile">
       <v-layout justify-end row v-if="!i._dir">
         <v-btn small @click="clone(i)" v-if="env.allow_clone">clone</v-btn>
-        <delay-btn class="item-btn" label="Delete" @fire="dele(i)"/>
+        <delay-btn class="item-btn" label="Delete" @fire="dele(i)" cntdown="2"/>
       </v-layout>
       <v-layout justify-end row v-else>
-        <delay-btn class="item-btn" label="Delete folder" @fire="dele(i)"/>
+        <delay-btn class="item-btn" label="Delete folder" @fire="dele(i)" cntdown="4"/>
       </v-layout>
     </v-card-actions>
     </v-card>
@@ -150,31 +150,21 @@ export default {
         }
       })
     },
-    deleAll: function () {
-      // console.log("delete all")
-      var restList = []
+    empty: function () {
+      var rest = prefix_uri + '/empty/'
+      rest += this.path_arr.join('/')
       var vm = this
-      this.items.forEach((item, idx) => {
-        if (item._file) { // not a dir
-          var rest = prefix_uri + '/delete/'
-          rest += vm.path_arr.join('/')
-          rest += '/' + item._file
-          restList.push(rest)
+      axios.get(rest).then((res) => {
+        if (res.data.login) {
+          vm.snackbar = true
+          vm.snackbar_text = `(づ｡◕‿‿◕｡)づ Please login`
+          vm.goLogin(res.data.login)
+        } else {
+          vm.update()
+          vm.snackbar = true
+          vm.snackbar_text =
+            `${res.data.basename}: ${res.data.res}`
         }
-      })
-      restList.forEach((rest, idx) => {
-          axios.get(rest).
-          then((res) => {
-            if (res.data.login) {
-              vm.snackbar = true
-              vm.snackbar_text = `(づ｡◕‿‿◕｡)づ Please login`
-              vm.goLogin(res.data.login)
-            } else {
-              vm.update()
-              vm.snackbar = true
-              vm.snackbar_text = `Deleted: ${res.data.basename}`
-            }
-          })
       })
     },
     get_navi_addr: function (idx) {
