@@ -1,6 +1,6 @@
 <template>
 <span>
-  <div v-if="json._dir">
+  <div v-if="json._dir" v-bind:class="{ unread: json._dir_num_files > 2 }">
     <div class="folder-view">
       <div>
         {{json.title}}
@@ -45,6 +45,9 @@ div.folder-view {
 	flex-wrap: wrap;
 	justify-content: space-between;
 	user-select: none;
+}
+.unread {
+	background-image: linear-gradient(to right, pink , white, white, white);
 }
 a {
   font-size: 1.4em;

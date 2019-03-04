@@ -1,4 +1,4 @@
 {
   "detailed": true,
-  "view-engine": "plain-view"
+  "view-engine": "feed-folder-view"
 }

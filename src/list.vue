@@ -30,7 +30,7 @@
       </v-flex>
       <v-flex d-flex md3>
         <v-btn small @click="openDir()" top>Droppy</v-btn>
-        <delay-btn v-if="path_arr.length > 1" class="item-btn" label="Empty and up"
+        <delay-btn v-if="allow_empty()" class="item-btn" label="Empty and up"
          @fire="empty()" cntdown="0" top/>
       </v-flex>
     </v-layout>
@@ -86,14 +86,17 @@
 import axios from 'axios' /* AJAX request lib */
 
 const prefix_uri = '/listify'
-const MAX_ITEMS_PER_PAGE = 15
+const MAX_ITEMS_PER_PAGE = 25
 
 export default {
   methods: {
     set_unset: function () {
       /* set default view-engine if not set */
-      if (!this.env['view-engine'])
+      if (undefined === this.env['view-engine'])
         this.env['view-engine'] = "plain-view"
+      /* set default allow-empty button */
+      if (undefined === this.env['allow-empty'])
+        this.env['allow-empty'] = true
       /* set default sort key */
       if (this.sortby === '' && this.env.sortable_keys)
         this.sortby = this.env.sortable_keys[0];
@@ -193,6 +196,10 @@ export default {
         return this.env.sortable_keys.includes(key);
       else
         return true;
+    },
+    allow_empty: function () {
+        console.log(this.env)
+        return this.env['allow-empty']
     },
     locate: function (items) {
       if (this.debug)
