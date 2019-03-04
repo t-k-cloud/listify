@@ -30,7 +30,7 @@
       </v-flex>
       <v-flex d-flex md3>
         <v-btn small @click="openDir()" top>Droppy</v-btn>
-        <delay-btn v-if="allow_empty()" class="item-btn" label="Empty and up"
+        <delay-btn v-if="allow_empty()" class="item-btn" label="Empty and back"
          @fire="empty()" cntdown="0" top/>
       </v-flex>
     </v-layout>
@@ -166,9 +166,8 @@ export default {
           vm.snackbar_text = `(づ｡◕‿‿◕｡)づ Please login`
           vm.goLogin(res.data.login)
         } else {
-          /* go back to upper level */
-          const addr = vm.get_navi_addr(vm.path_arr.length - 2)
-          this.$router.replace(addr)
+          /* go back */
+          this.$router.go(-1)
           vm.update()
           vm.snackbar = true
           vm.snackbar_text =
@@ -198,7 +197,6 @@ export default {
         return true;
     },
     allow_empty: function () {
-        console.log(this.env)
         return this.env['allow-empty']
     },
     locate: function (items) {
