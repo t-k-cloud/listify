@@ -25,11 +25,13 @@
       <v-flex d-flex md9>
         <v-select small :items="sortable_keys" label="Sort" v-model="sortby"/>
         <v-checkbox label="desc" v-model="descending"/>
-        <v-checkbox label="debug" v-model="debug"/>
+        <v-checkbox label="detail" v-model="detail"/>
+        <!-- <v-checkbox label="debug" v-model="debug"/> -->
       </v-flex>
       <v-flex d-flex md3>
         <v-btn small @click="openDir()" top>Droppy</v-btn>
-        <delay-btn class="item-btn" label="Empty folder" top @fire="empty()" cntdown="3"/>
+        <delay-btn v-if="path_arr.length > 1" class="item-btn" label="Empty and up"
+         @fire="empty()" cntdown="0" top/>
       </v-flex>
     </v-layout>
   </v-container>
@@ -41,15 +43,16 @@
     <v-card>
     <v-card-text v-bind:class="{clickable: !singleJsonFile}"
                  style="word-break: break-all" @click="click_item(i)">
-      <component v-bind:is="bindViewComponent" v-bind:json="i"></component>
+      <component v-bind:is="bindViewComponent" v-bind:json="i" v-bind:detail="detail">
+      </component>
     </v-card-text>
     <v-card-actions v-if="!singleJsonFile">
       <v-layout justify-end row v-if="!i._dir">
         <v-btn small @click="clone(i)" v-if="env.allow_clone">clone</v-btn>
-        <delay-btn class="item-btn" label="Delete" @fire="dele(i)" cntdown="2"/>
+        <delay-btn class="item-btn" label="Delete" @fire="dele(i)" cntdown="0"/>
       </v-layout>
       <v-layout justify-end row v-else>
-        <delay-btn class="item-btn" label="Delete folder" @fire="dele(i)" cntdown="4"/>
+        <delay-btn class="item-btn" label="Delete folder" @fire="dele(i)" cntdown="3"/>
       </v-layout>
     </v-card-actions>
     </v-card>
@@ -160,6 +163,9 @@ export default {
           vm.snackbar_text = `(づ｡◕‿‿◕｡)づ Please login`
           vm.goLogin(res.data.login)
         } else {
+          /* go back to upper level */
+          const addr = vm.get_navi_addr(vm.path_arr.length - 2)
+          this.$router.replace(addr)
           vm.update()
           vm.snackbar = true
           vm.snackbar_text =
@@ -237,6 +243,7 @@ export default {
       'scrollY': 0,
       'items': [],
       env: {},
+      detail: false,
       debug: false
     }
   },

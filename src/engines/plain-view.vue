@@ -6,12 +6,15 @@
 
   <span v-else>
   {{json._file}}
+  <div v-if="detail" style="padding-top: 15px;">
+    <p v-html="json.desc"></p>
+  </div>
   </span>
 </span>
 </template>
 
 <script>
 export default {
-  props: ['json']
+  props: ['json', 'detail']
 }
 </script>

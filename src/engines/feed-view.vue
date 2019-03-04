@@ -6,12 +6,15 @@
   <span class="small">updated: {{json['updated']}}</span>
   <br/>
   <a target="_blank" v-bind:href="json.link" @click.stop=""> {{json.link}} </a>
+  <div v-if="detail" style="padding-top: 15px;">
+    <p v-html="json.desc"></p>
+  </div>
 </div>
 </template>
 
 <script>
 export default {
-  props: ['json'],
+  props: ['json', 'detail'],
   methods: {
 	update_short_str: function(str) {
 		if (str)

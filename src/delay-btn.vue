@@ -33,14 +33,22 @@ export default {
         this.counting = true
         this.cur_number = this.cntdown || 3
         var vm = this
-        this.intval = setInterval(function () {
-          vm.cur_number --
-          if (vm.cur_number == 0) {
-            clearInterval(vm.intval)
-            vm.$emit('fire')
-            vm.counting = false
-          }
-        }, 1000);
+
+        if (this.cur_number == 0) {
+          /* immediate */
+          vm.$emit('fire')
+          vm.counting = false
+        } else {
+          /* delay */
+          this.intval = setInterval(function () {
+            vm.cur_number --
+            if (vm.cur_number <= 0) {
+              clearInterval(vm.intval)
+              vm.$emit('fire')
+              vm.counting = false
+            }
+          }, 1000);
+        }
       } else {
         this.$emit('clear', ev)
         this.counting = false
