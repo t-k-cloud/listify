@@ -1,4 +1,5 @@
 {
   "detailed": true,
+  "allow-empty": false,
   "view-engine": "feed-folder-view"
 }
