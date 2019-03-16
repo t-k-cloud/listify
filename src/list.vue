@@ -140,6 +140,7 @@ export default {
     },
     dele: function (item) {
       var rest = prefix_uri + '/delete/'
+      if (this.path_arr.length <= 1) return /* forbid */
       rest += this.path_arr.join('/')
       const basename = item._file || item._dir
       rest += '/' + basename
@@ -158,6 +159,7 @@ export default {
     },
     empty: function () {
       var rest = prefix_uri + '/empty/'
+      if (this.path_arr.length <= 2) return /* forbid */
       rest += this.path_arr.join('/')
       var vm = this
       axios.get(rest).then((res) => {
@@ -276,6 +278,7 @@ export default {
       var arr = path.split('/')
       arr.splice(0, 3)
       arr = arr.map(x => decodeURIComponent(x))
+      console.log(arr)
       return arr
     },
     path: function () {
